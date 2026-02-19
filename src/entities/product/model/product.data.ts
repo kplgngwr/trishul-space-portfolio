@@ -16,7 +16,7 @@ const rawProducts = [
             { label: 'Thrust (Vacuum)', value: '37 kN' },
             { label: 'Propellant', value: 'LOX / LNG' },
             { label: 'Cycle', value: 'Fuel rich staged combustion' },
-            { label: 'Isp (Vacuum)', value: '348 s' },
+            { label: 'Isp (Vacuum)', value: '340 s' },
         ],
         image: '/Harpy-1.png',
         ignitorVideo: '/Torch ignitor 1.mp4',

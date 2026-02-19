@@ -67,7 +67,7 @@ export function HeroContent({ scrollYProgress, prefersReducedMotion }: HeroConte
                     variants={staggerContainer}
                 >
                     <StatItem
-                        end={348}
+                        end={340}
                         suffix="s"
                         label="Specific Impulse"
                     />
