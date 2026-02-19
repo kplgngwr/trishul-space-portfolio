@@ -20,7 +20,7 @@ export function Technology(): ReactNode {
     const [activeIndex, setActiveIndex] = useState<number>(0);
     const [playingVideo, setPlayingVideo] = useState<{ productId: string; videoType: 'engine' | 'ignitor' } | null>(null);
     const [isAutoPlay, setIsAutoPlay] = useState(false);
-    const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const prefersReducedMotion = useReducedMotion();
 
     // Progress value that can be controlled manually when tabs change

@@ -83,7 +83,7 @@ export function TestFacility(): ReactNode {
             </video>
 
             {/* Dark Overlay */}
-            <div className={styles.videoOverlay} />
+            {showOverlay && <div className={styles.videoOverlay} />}
 
             {/* Video Controls */}
             <div className={styles.videoControls}>

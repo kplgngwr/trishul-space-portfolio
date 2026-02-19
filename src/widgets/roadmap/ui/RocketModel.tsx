@@ -4,10 +4,6 @@ import { useGLTF, Center, Bounds } from '@react-three/drei';
 import { useReducedMotion } from '@/shared/lib';
 import type { Group, Object3DEventMap } from 'three';
 
-interface RocketModelProps {
-    scrollProgress?: unknown; // No longer used, kept for compatibility
-}
-
 /**
  * Inner 3D scene component that handles the model and rotation
  */
@@ -48,8 +44,6 @@ function RocketScene(): ReactNode {
  * @description 3D rocket engine model with auto-rotation
  */
 export function RocketModel(): ReactNode {
-    const prefersReducedMotion = useReducedMotion();
-
     return (
         <div
             style={{

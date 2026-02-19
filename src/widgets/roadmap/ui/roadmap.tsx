@@ -53,13 +53,11 @@ export function Roadmap(): ReactNode {
         const mediaQuery = window.matchMedia('(max-width: 768px)');
         const handleChange = (event: MediaQueryListEvent) => setIsCompactTimeline(event.matches);
 
-        if ('addEventListener' in mediaQuery) {
-            mediaQuery.addEventListener('change', handleChange);
-            return () => mediaQuery.removeEventListener('change', handleChange);
-        }
+        mediaQuery.addEventListener?.('change', handleChange);
 
-        mediaQuery.addListener(handleChange);
-        return () => mediaQuery.removeListener(handleChange);
+        return () => {
+            mediaQuery.removeEventListener?.('change', handleChange);
+        };
     }, []);
 
     const denominator = Math.max(totalSteps - 1, 1);

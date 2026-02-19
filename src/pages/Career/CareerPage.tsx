@@ -5,10 +5,6 @@ import {
     ArrowRightIcon,
     RocketIcon,
     BoltIcon,
-    TargetIcon,
-    TrendingUpIcon,
-    HeartIcon,
-    GraduationCapIcon,
 } from '@/shared/ui';
 import { useReducedMotion, EASE_OUT_EXPO } from '@/shared/lib';
 import { ApplicationModal } from './ApplicationModal';
@@ -30,12 +26,6 @@ interface Department {
     name: string;
     icon: ReactNode;
     positions: JobPosition[];
-}
-
-interface Benefit {
-    icon: ReactNode;
-    title: string;
-    description: string;
 }
 
 // ============================================================================
