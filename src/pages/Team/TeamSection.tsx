@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { founders, mentors, type TeamMember } from '@/entities/team-member';
+import { founders, type TeamMember } from '@/entities/team-member';
+// import {mentors} from '@/entities/mentor';
 import {
     useIntersection,
     useReducedMotion,
