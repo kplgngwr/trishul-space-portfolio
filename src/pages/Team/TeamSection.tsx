@@ -89,12 +89,12 @@ export function TeamSection(): ReactNode {
                         {renderCards(founders)}
                     </div>
 
-                    <div className={styles.group}>
+                    {/* <div className={styles.group}>
                         <motion.h3 className={styles.groupTitle} variants={variants.fadeInUp}>
                             Mentors
                         </motion.h3>
                         {renderCards(mentors)}
-                    </div>
+                    </div> */}
                 </motion.div>
             </div>
         </section>

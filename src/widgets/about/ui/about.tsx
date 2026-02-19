@@ -23,7 +23,7 @@ const GALLERY_IMAGES = [
 
 const STATS = [
     { value: '2022', label: 'Founded' },
-    { value: '15+', label: 'Members' },
+    { value: '10+', label: 'Members' },
     { value: '3', label: 'Rocket Engines' },
 ] as const;
 
