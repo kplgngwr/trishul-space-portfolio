@@ -1,0 +1,40 @@
+.swipeContainer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Clean flashlight glow - color changes based on position */
+.glowOverlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(var(--glow-color, 59, 130, 246), 0.35) 0%,
+            rgba(var(--glow-color, 59, 130, 246), 0.30) 40%,
+            rgba(var(--glow-color, 59, 130, 246), 0.20) 60%,
+            rgba(var(--glow-color, 59, 130, 246), 0.12) 80%,
+            transparent 100%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.glowOverlay.active {
+    opacity: 1;
+}
+
+/* Reduced motion: disable all effects */
+@media (prefers-reduced-motion: reduce) {
+    .swipeContainer {
+        display: none;
+    }
+}
+
+/* Mobile: simplify or disable */
+@media (max-width: 768px) {
+    .swipeContainer {
+        display: none;
+    }
+}

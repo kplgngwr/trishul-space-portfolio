@@ -1,0 +1,323 @@
+.section {
+    padding: var(--spacing-16) 0;
+    background: var(--color-surface-secondary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+}
+
+.sectionHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: var(--spacing-8);
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-10);
+    align-items: stretch;
+}
+
+/* Image Column */
+.imageContainer {
+    position: relative;
+}
+
+.image {
+    width: 100%;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Image Slideshow - One Image at a Time */
+.gallery {
+    position: relative;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    background: var(--color-surface-primary);
+    height: 100%;
+}
+
+@media (max-width: 640px) {
+    .gallery {
+        height: 320px;
+    }
+}
+
+.galleryImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Gallery Navigation Dots */
+.galleryNav {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-2);
+    padding: var(--spacing-3) 0;
+    position: absolute;
+    bottom: var(--spacing-3);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-full);
+    padding: var(--spacing-2) var(--spacing-4);
+}
+
+.galleryDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.galleryDot:hover {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.galleryDotActive {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* Content Column */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    width: 100%;
+}
+
+.title {
+    font-size: var(--text-fluid-2xl);
+    margin-bottom: var(--spacing-3);
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
+    width: 100%;
+}
+
+.text p {
+    font-size: var(--text-fluid-sm);
+    line-height: 1.6;
+    text-align: justify;
+    text-justify: inter-word;
+    max-width: none; /* ensure text spans full content width on large screens */
+}
+
+
+/* Stats: use a responsive equal-width grid so each stat looks identical */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+    width: 100%;
+    align-items: stretch;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--spacing-4) - 2px);
+    background: var(--color-surface-elevated);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    min-height: 88px; /* consistent visual height */
+}
+
+.statValue {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xl);
+    font-weight: 700;
+    color: var(--color-brand-primary);
+    display: block;
+}
+
+.statLabel {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+}
+
+/* Founders Gallery */
+.foundersGallery {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--spacing-6);
+    padding: var(--spacing-4) 0;
+    position: relative;
+}
+
+.founderCard {
+    position: relative;
+    width: 120px;
+    margin-left: -30px;
+    background: linear-gradient(145deg, #ffffff 0%, #f0f0f0 100%);
+    border-radius: var(--radius-lg);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.15),
+        0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-2);
+    transform-origin: bottom center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    z-index: calc(4 - var(--card-index));
+}
+
+.founderCard:first-child {
+    margin-left: 0;
+}
+
+/* Staggered rotations for overlapping effect */
+.founderCard:nth-child(1) {
+    transform: rotate(-8deg);
+}
+
+.founderCard:nth-child(2) {
+    transform: rotate(-3deg);
+}
+
+.founderCard:nth-child(3) {
+    transform: rotate(3deg);
+}
+
+.founderCard:nth-child(4) {
+    transform: rotate(8deg);
+}
+
+.founderCard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+            rgba(59, 130, 246, 0.1) 0%,
+            rgba(139, 92, 246, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.founderCard:hover::before {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-8);
+    }
+
+    .stats {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .foundersGallery {
+        justify-content: center;
+    }
+
+    .founderCard {
+        width: 100px;
+        margin-left: -25px;
+    }
+}
+
+@media (max-width: 640px) {
+    .section {
+        min-height: auto;
+        padding: var(--spacing-8) 0;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .imageContainer {
+        order: 0;
+        margin-bottom: var(--spacing-6);
+    }
+
+    .content {
+        order: 1;
+    }
+
+    .title {
+        font-size: 1.25rem !important;
+    }
+
+    .text p {
+        font-size: 0.875rem;
+    }
+
+    .stats {
+        grid-template-columns: 1fr; /* stack on small screens */
+        gap: var(--spacing-3);
+    }
+
+    .stat {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: var(--spacing-2) var(--spacing-3);
+        min-height: auto;
+        align-items: center;
+    }
+
+    .statValue {
+        font-size: var(--text-fluid-lg);
+    }
+
+    .badges {
+        bottom: var(--spacing-3);
+        left: var(--spacing-3);
+        right: var(--spacing-3);
+        gap: var(--spacing-2);
+    }
+
+    .badge {
+        padding: var(--spacing-1) var(--spacing-2);
+    }
+
+    .badgeText {
+        font-size: 0.65rem;
+    }
+
+    .founderCard {
+        width: 80px;
+        margin-left: -20px;
+    }
+
+    .founderName {
+        font-size: 0.7rem;
+    }
+
+    .founderRole {
+        font-size: 0.55rem;
+    }
+}

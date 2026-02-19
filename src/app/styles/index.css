@@ -1,0 +1,402 @@
+@import "tailwindcss";
+
+/* ============================================
+   TRISHUL SPACE - Design System (Tailwind v4)
+   FSD Architecture - Shared Layer
+   ============================================ */
+
+@theme {
+    /* Fluid Typography Scale using clamp() */
+    --text-fluid-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+    --text-fluid-sm: clamp(0.875rem, 0.825rem + 0.25vw, 1rem);
+    --text-fluid-base: clamp(1rem, 0.925rem + 0.375vw, 1.125rem);
+    --text-fluid-lg: clamp(1.125rem, 1rem + 0.625vw, 1.375rem);
+    --text-fluid-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.625rem);
+    --text-fluid-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2.25rem);
+    --text-fluid-3xl: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+    --text-fluid-4xl: clamp(2.5rem, 1.75rem + 3.75vw, 5rem);
+    --text-fluid-hero: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+
+    /* Semantic Surface Colors */
+    --color-surface-primary: #fafbfc;
+    --color-surface-secondary: #f1f5f9;
+    --color-surface-elevated: #ffffff;
+    --color-surface-inverse: #0f172a;
+
+    /* Semantic Text Colors */
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #334155;
+    --color-text-muted: #64748b;
+    --color-text-inverse: #ffffff;
+
+    /* Brand Colors */
+    --color-brand-primary: #1e40af;
+    --color-brand-primary-light: #3b82f6;
+    --color-brand-primary-dark: #1e3a8a;
+    --color-brand-accent: #f97316;
+    --color-brand-accent-light: #fb923c;
+    --color-brand-accent-glow: rgba(249, 115, 22, 0.4);
+
+    /* Border Colors */
+    --color-border-default: #e2e8f0;
+    --color-border-strong: #cbd5e1;
+
+    /* Grid Colors */
+    --color-grid: rgba(30, 64, 175, 0.06);
+    --color-grid-accent: rgba(30, 64, 175, 0.12);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgb(15 23 42 / 0.04);
+    --shadow-md: 0 4px 12px rgb(15 23 42 / 0.08);
+    --shadow-lg: 0 12px 32px rgb(15 23 42 / 0.12);
+    --shadow-xl: 0 24px 48px rgb(15 23 42 / 0.16);
+    --shadow-glow-blue: 0 0 40px rgba(59, 130, 246, 0.3);
+    --shadow-glow-orange: 0 0 40px rgba(249, 115, 22, 0.3);
+
+    /* Spacing (4px modular base) */
+    --spacing-1: 0.25rem;
+    /* 4px */
+    --spacing-2: 0.5rem;
+    /* 8px */
+    --spacing-3: 0.75rem;
+    /* 12px */
+    --spacing-4: 1rem;
+    /* 16px */
+    --spacing-5: 1.25rem;
+    /* 20px */
+    --spacing-6: 1.5rem;
+    /* 24px */
+    --spacing-8: 2rem;
+    /* 32px */
+    --spacing-10: 2.5rem;
+    /* 40px */
+    --spacing-12: 3rem;
+    /* 48px */
+    --spacing-16: 4rem;
+    /* 64px */
+    --spacing-20: 5rem;
+    /* 80px */
+    --spacing-24: 6rem;
+    /* 96px */
+    --spacing-32: 8rem;
+    /* 128px */
+
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+
+    /* Animation */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --duration-fast: 150ms;
+    --duration-base: 300ms;
+    --duration-slow: 500ms;
+
+    /* Container */
+    --container-max: 1536px;
+    --container-padding: 2rem;
+
+
+
+    /* Typography Families */
+    --font-display: 'Rajdhani',
+        sans-serif;
+    --font-body: 'Play',
+        sans-serif;
+}
+
+@media (min-width: 1920px) {
+    :root {
+        --container-max: 1800px;
+        --container-padding: 4rem;
+        --text-fluid-hero: 5.5rem;
+    }
+}
+
+/* ============================================
+   Base Styles & Reset
+   ============================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Note: Scroll-snap removed - page flip animation handles scroll behavior */
+
+body {
+    font-family: var(--font-body);
+    font-size: var(--text-fluid-base);
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background: var(--color-surface-primary);
+    overflow-x: hidden;
+    position: relative;
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #1e40af #0f172a;
+}
+
+/* Custom Scrollbar - WebKit (Chrome, Safari, Edge) */
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #1e40af 0%, #3b82f6 50%, #1e40af 100%);
+    border-radius: 10px;
+    border: 2px solid #0f172a;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #2563eb 0%, #60a5fa 50%, #2563eb 100%);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+}
+
+h1 {
+    font-size: var(--text-fluid-hero);
+}
+
+h2 {
+    font-size: var(--text-fluid-4xl);
+}
+
+h3 {
+    font-size: var(--text-fluid-3xl);
+}
+
+h4 {
+    font-size: var(--text-fluid-xl);
+}
+
+p {
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ============================================
+   Layout Utilities
+   ============================================ */
+
+.container {
+    width: 100%;
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+}
+
+.section {
+    padding: var(--spacing-24) 0;
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--spacing-16);
+}
+
+.section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-sm);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-brand-primary);
+    margin-bottom: var(--spacing-4);
+}
+
+.section-eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: var(--color-brand-accent);
+}
+
+/* ============================================
+   Skip to Content - Accessibility
+   ============================================ */
+
+.skip-to-content {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-brand-primary);
+    color: var(--color-text-inverse);
+    padding: var(--spacing-3) var(--spacing-6);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.2s ease-out;
+    text-decoration: none;
+}
+
+.skip-to-content:focus {
+    top: var(--spacing-4);
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   Grid Layouts
+   ============================================ */
+
+.grid {
+    display: grid;
+    gap: var(--spacing-6);
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    :root {
+        --container-padding: 1rem;
+    }
+
+    /* Mobile Typography - Reduce all heading sizes */
+    h1 {
+        font-size: clamp(1.5rem, 5vw, 2rem) !important;
+    }
+
+    h2 {
+        font-size: clamp(1.25rem, 4.5vw, 1.75rem) !important;
+    }
+
+    h3 {
+        font-size: clamp(1.125rem, 4vw, 1.5rem) !important;
+    }
+
+    h4 {
+        font-size: clamp(1rem, 3.5vw, 1.25rem) !important;
+    }
+
+    /* Reduce section padding on mobile */
+    .section {
+        padding: var(--spacing-12) 0;
+    }
+
+    .section-header {
+        margin-bottom: var(--spacing-8);
+    }
+
+    /* Prevent horizontal overflow */
+    body {
+        overflow-x: hidden;
+    }
+
+    img,
+    video {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-accent {
+    color: var(--color-brand-accent);
+}
+
+/* ============================================
+   Selection
+   ============================================ */
+
+::selection {
+    background: var(--color-brand-primary);
+    color: var(--color-text-inverse);
+}
+
+/* ============================================
+   Reduced Motion Support
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

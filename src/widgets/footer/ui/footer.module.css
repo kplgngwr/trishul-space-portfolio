@@ -1,0 +1,217 @@
+.footer {
+    position: relative;
+    padding: var(--spacing-10) 0 var(--spacing-6);
+    padding-top: calc(var(--spacing-10) + 56px);
+    background: var(--color-surface-inverse);
+    color: var(--color-text-inverse);
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.bgPattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.gradientOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(0, 0, 0, 0.3) 100%);
+}
+
+.main {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-8);
+    margin-bottom: var(--spacing-6);
+}
+
+/* Brand */
+.brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    height: 50px;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+    /* Invert and brighten logo for dark background visibility */
+    filter: brightness(0) invert(1);
+}
+
+.tagline {
+    font-size: var(--text-fluid-xs);
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+.social {
+    display: flex;
+    gap: var(--spacing-2);
+    margin-top: var(--spacing-1);
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--color-text-inverse);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.socialLink:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2),
+        0 0 40px rgba(59, 130, 246, 0.15);
+}
+
+/* Links */
+.linksRow {
+    display: flex;
+    gap: var(--spacing-8);
+    justify-content: flex-end;
+}
+
+.linkGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.linkGroupTitle {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    color: var(--color-text-inverse);
+    margin-bottom: var(--spacing-1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.linkGroup a,
+.linkGroup p {
+    font-size: var(--text-fluid-xs);
+    color: rgba(255, 255, 255, 0.6);
+    transition: color var(--duration-fast) ease-out;
+}
+
+.linkGroup a:hover {
+    color: var(--color-text-inverse);
+}
+
+/* Divider with shimmer */
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 0%,
+            rgba(255, 255, 255, 0.15) 50%,
+            rgba(255, 255, 255, 0.05) 100%);
+    background-size: 200% 100%;
+    margin: var(--spacing-6) 0;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+
+    0%,
+    100% {
+        background-position: 100% 0;
+    }
+
+    50% {
+        background-position: 0 0;
+    }
+}
+
+/* Bottom */
+.bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+}
+
+.copyright {
+    font-size: var(--text-fluid-xs);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.email {
+    font-size: var(--text-fluid-xs);
+    color: rgba(255, 255, 255, 0.7);
+    transition: color var(--duration-fast) ease-out;
+}
+
+.email:hover {
+    color: var(--color-text-inverse);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-6);
+    }
+
+    .linksRow {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .bottom {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer {
+        padding: var(--spacing-8) 0 var(--spacing-4);
+    }
+
+    .tagline {
+        font-size: 0.75rem;
+    }
+
+    .columnTitle {
+        font-size: 0.75rem;
+    }
+
+    .link {
+        font-size: 0.8rem;
+    }
+
+    .copyright,
+    .email {
+        font-size: 0.7rem;
+    }
+
+    .socialLink {
+        width: 36px;
+        height: 36px;
+    }
+}

@@ -1,0 +1,206 @@
+.section {
+    padding: var(--spacing-12) 0; 
+    background: var(--color-surface-primary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+}
+
+.section > div {
+    width: 100%;
+}
+
+.header {
+    text-align: center;
+    margin-top: var(--spacing-8);
+    margin-bottom: var(--spacing-6);
+}
+
+.title {
+    font-size: var(--text-fluid-2xl);
+    margin: var(--spacing-1) 0 var(--spacing-2);
+}
+
+.description {
+    font-size: var(--text-fluid-sm);
+    color: var(--color-text-secondary);
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.group {
+    margin-top: var(--spacing-6);
+    width: 100%;
+}
+
+.groupTitle {
+    font-size: var(--text-fluid-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-bottom: var(--spacing-4);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Grid layout: 5 columns on large screens, fills full width */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-8);
+    align-items: start;
+    justify-content: center; /* center the track set when fixed width */
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-4) 0; /* reduce padding, no outer frame */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    width: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.avatar {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: block;
+    background: #fff;
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-3);
+    overflow: hidden;
+    border: none; /* remove any outline around image */
+}
+
+.avatar span {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-lg);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.avatarImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+}
+
+.cardContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+}
+
+.name {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-base);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-transform: none;
+}
+
+.role {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+/* Founder specific */
+.founderInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-2) 0;
+    text-align: center;
+}
+
+.founderName {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+}
+
+.founderRole {
+    font-size: 0.65rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Ensure group takes full width and centers content on large screens */
+@media (min-width: 1024px) {
+    .group {
+        padding: 0 var(--container-padding);
+    }
+
+    /* On large screens, use fixed-width 3 columns and center them
+       so items occupy the middle of a 5-column conceptual grid (2–4) */
+    .grid {
+        grid-template-columns: repeat(3, 320px);
+        justify-content: center;
+    }
+}
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 300px);
+        justify-content: center;
+        gap: var(--spacing-6);
+    }
+}
+
+@media (max-width: 640px) {
+    .section {
+        min-height: auto;
+        padding: var(--spacing-8) 0;
+    }
+
+    .grid {
+        grid-template-columns: minmax(0, 280px);
+        justify-content: center;
+        gap: var(--spacing-4);
+    }
+
+    .card {
+        padding: var(--spacing-4);
+    }
+
+    .founderCard {
+        width: 80px;
+        margin-left: -20px;
+    }
+
+    .founderName {
+        font-size: 0.7rem;
+    }
+
+    .founderRole {
+        font-size: 0.55rem;
+    }
+
+    .title {
+        font-size: 1.25rem !important;
+    }
+
+    .description {
+        font-size: 0.875rem;
+    }
+}

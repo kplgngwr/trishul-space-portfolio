@@ -1,0 +1,184 @@
+.section {
+    padding: var(--spacing-8) 0;
+    padding-top: calc(var(--spacing-8) + 56px);
+    background: var(--color-surface-primary);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-6);
+}
+
+.title {
+    font-size: var(--text-fluid-2xl);
+    margin-top: var(--spacing-2);
+}
+
+.group {
+    margin-top: var(--spacing-4);
+    margin-bottom: var(--spacing-6);
+}
+
+.groupLabel {
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-3);
+}
+
+.carousel {
+    overflow: hidden;
+    padding-bottom: var(--spacing-3);
+    position: relative;
+}
+
+.track {
+    display: flex;
+    gap: var(--spacing-4);
+    animation: scroll-left 10s linear infinite;
+}
+
+.track:empty {
+    animation: none;
+}
+
+.staticList {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: var(--spacing-3);
+}
+
+.card {
+    flex: 0 0 220px;
+    max-width: 220px;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-4);
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    box-sizing: border-box;
+}
+
+.card:hover {
+    border-color: var(--color-brand-primary);
+    transform: translateY(-4px);
+}
+
+.card:focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+}
+
+.darkCard {
+    background: var(--color-surface-inverse);
+}
+
+.darkCard .name {
+    color: var(--color-text-inverse);
+}
+
+.logo {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    align-items: center;
+
+@media (max-width: 1024px) {
+    .staticList {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+}
+    justify-content: center;
+    margin-bottom: var(--spacing-3);
+    transition: filter 0.3s ease;
+}
+
+.logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.name {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@media (max-width: 1024px) {
+    .track {
+        gap: var(--spacing-3);
+        animation-duration: 24s;
+    }
+
+    .card {
+        flex: 0 0 min(320px, 100%);
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 640px) {
+    /* Mobile: show one card at a time with snap scrolling */
+    .carousel,
+    .staticList,
+    .track {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+    }
+
+    .groupLabel {
+        margin-bottom: var(--spacing-2);
+    }
+
+    .track {
+        animation: none;
+        gap: var(--spacing-3);
+    }
+
+    .staticList {
+        display: flex;
+        gap: var(--spacing-3);
+        flex-wrap: nowrap;
+        align-items: center;
+    }
+
+    .card {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: var(--spacing-3);
+        scroll-snap-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* hide scrollbars for a cleaner look */
+    .carousel::-webkit-scrollbar,
+    .staticList::-webkit-scrollbar,
+    .track::-webkit-scrollbar {
+        display: none;
+    }
+}

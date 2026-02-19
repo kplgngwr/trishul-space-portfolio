@@ -1,0 +1,82 @@
+.stackContainer {
+    position: relative;
+    width: 100%;
+}
+
+/* Each section wrapper creates the stacking context */
+.sectionWrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* Wrapper for sections that have their own scroll animations */
+/* These don't use sticky positioning to preserve their scroll tracking */
+.sectionWrapperWithScroll {
+    position: relative;
+    width: 100%;
+}
+
+/* Normal layout - no sticky positioning */
+.pageFlipScene {
+    position: relative;
+    width: 100%;
+    /* overflow: visible to allow animated elements like orbs to extend outside */
+    overflow: visible;
+}
+
+/* The page that animates */
+.page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    will-change: transform, opacity;
+    transform-origin: center top;
+    border-radius: 0;
+    /* overflow: visible to allow animated elements */
+    overflow: visible;
+
+    /* Clean transition between sections - no visible shadow lines */
+    box-shadow: none;
+}
+
+/* No shadow even when covered - keep clean transitions */
+.page[data-covered="true"] {
+    box-shadow: none;
+}
+
+/* Content container - each section handles its own overflow internally */
+.pageContent {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    /* Let individual sections control their overflow */
+    overflow: visible;
+    background: var(--color-surface-primary, #fafbfc);
+}
+
+/* No separation effects between sections */
+
+/* Mobile - disable page flip animation */
+@media (max-width: 768px) {
+    .sectionWrapper {
+        height: auto;
+        min-height: auto;
+    }
+
+    .pageFlipScene {
+        position: relative;
+        top: auto;
+        height: auto;
+        min-height: auto;
+    }
+
+    .page {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+
+    .pageContent {
+        height: auto;
+        min-height: auto;
+    }
+}

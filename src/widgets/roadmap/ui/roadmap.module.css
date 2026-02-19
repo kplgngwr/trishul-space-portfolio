@@ -1,0 +1,563 @@
+.wrapper {
+    position: relative;
+    background: var(--color-surface-primary);
+}
+
+.scrollHeight {
+    /* Keep the sticky section active for ~viewport worth of scroll */
+    height: 100vh;
+    position: relative;
+}
+
+.sticky {
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--spacing-6) 0;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 200px 1fr 500px;
+    gap: var(--spacing-8);
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+    width: 100%;
+    align-items: center;
+}
+
+.header {
+    position: absolute;
+    top: var(--spacing-8);
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.title {
+    font-size: var(--text-fluid-3xl);
+    margin-top: var(--spacing-2);
+}
+
+/* Timeline Navigation */
+.timelineNav {
+    display: flex;
+    gap: var(--spacing-4);
+    height: 100%;
+    max-height: 400px;
+}
+
+.track {
+    width: 3px;
+    background: var(--color-border-default);
+    border-radius: var(--radius-full);
+    position: relative;
+}
+
+.progress {
+    width: 100%;
+    background: linear-gradient(180deg,
+            var(--color-brand-primary) 0%,
+            var(--color-brand-accent) 100%);
+    border-radius: var(--radius-full);
+}
+
+.markers {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: var(--spacing-4);
+    padding: var(--spacing-2) 0;
+}
+
+.mobileOnly {
+    display: none;
+    /* Sizing is handled by the parent .content on mobile */
+}
+
+.markerItem {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    background: none;
+    border: none;
+    padding: var(--spacing-2);
+    margin: calc(-1 * var(--spacing-2));
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: background var(--duration-fast) ease-out;
+}
+
+.markerItem:hover {
+    background: var(--color-surface-elevated);
+}
+
+.markerItem:focus-visible {
+    outline: 2px solid var(--color-brand-primary);
+    outline-offset: 2px;
+}
+
+.markerDot {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-surface-elevated);
+    border: 2px solid var(--color-border-default);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    transition: all var(--duration-base) ease-out;
+}
+
+.markerItem.active .markerDot {
+    border-color: var(--color-brand-primary);
+    color: var(--color-brand-primary);
+    transform: scale(1.1);
+}
+
+.markerItem.completed .markerDot {
+    background: var(--color-brand-primary);
+    border-color: var(--color-brand-primary);
+    color: white;
+}
+
+.markerDot.current {
+    border-color: var(--color-brand-accent);
+    color: var(--color-brand-accent);
+}
+
+.markerDot.vision {
+    border-color: var(--color-brand-primary);
+    color: var(--color-brand-primary);
+}
+
+.pulseInner {
+    width: 12px;
+    height: 12px;
+    background: var(--color-brand-accent);
+    border-radius: 50%;
+}
+
+.markerLabel {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.markerItem.active .markerLabel {
+    color: var(--color-text-primary);
+    font-weight: 600;
+}
+
+/* Milestone Display */
+.display {
+    display: flex;
+    align-items: center;
+}
+
+.detail {
+    padding: var(--spacing-8);
+    background: var(--color-surface-elevated);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 500px;
+}
+
+.detailHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-4);
+}
+
+.statusBadge {
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-full);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.statusBadge.completed {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+}
+
+.statusBadge.current {
+    background: rgba(249, 115, 22, 0.1);
+    color: var(--color-brand-accent);
+}
+
+.statusBadge.upcoming {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--color-text-muted);
+}
+
+.detailDate {
+    font-size: var(--text-fluid-sm);
+    color: var(--color-text-muted);
+}
+
+.detailTitle {
+    font-size: var(--text-fluid-2xl);
+    margin-bottom: var(--spacing-2);
+    text-transform: none;
+}
+
+.detailSpecs {
+    display: inline-block;
+    padding: var(--spacing-1) var(--spacing-3);
+    background: var(--color-surface-secondary);
+    border-radius: var(--radius-md);
+    font-size: var(--text-fluid-xs);
+    color: var(--color-brand-primary);
+    font-weight: 500;
+    margin-bottom: var(--spacing-4);
+}
+
+.detailDesc {
+    font-size: var(--text-fluid-base);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+.visual {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--spacing-6);
+}
+
+.visualRing {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 3px solid var(--color-border-default);
+}
+
+.visualRing.completed {
+    border-color: #16a34a;
+}
+
+.visualRing.current {
+    border-color: var(--color-brand-accent);
+}
+
+.visualNumber {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.visualTotal {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+}
+
+/* Vision */
+.visionDetail {
+    padding: var(--spacing-8);
+    background: var(--color-surface-elevated);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 500px;
+}
+
+.visionTitle {
+    font-size: var(--text-fluid-2xl);
+    margin-bottom: var(--spacing-6);
+    text-transform: none;
+}
+
+.visionCards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.visionCard {
+    padding: var(--spacing-4);
+    background: var(--color-surface-secondary);
+    border-radius: var(--radius-lg);
+    border-left: 3px solid var(--color-brand-accent);
+}
+
+.visionYear {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+    font-weight: 500;
+}
+
+.visionName {
+    font-size: var(--text-fluid-lg);
+    color: var(--color-text-primary);
+    margin: var(--spacing-1) 0;
+    text-transform: none;
+}
+
+.visionDesc {
+    font-size: var(--text-fluid-sm);
+    color: var(--color-text-secondary);
+}
+
+/* 3D Model Container */
+.modelContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 560px;
+    border-radius: var(--radius-xl);
+    background: radial-gradient(ellipse at center,
+            rgba(var(--color-brand-primary-rgb, 59, 130, 246), 0.05) 0%,
+            transparent 70%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .wrapper {
+        min-height: auto;
+        padding: var(--spacing-8) 0;
+        overflow-x: hidden;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-4);
+    }
+
+    .timelineNav {
+        display: none;
+    }
+
+    .mobileOnly {
+        display: block;
+        order: 0;
+        width: 100%;
+        box-sizing: border-box;
+        /* Use the global container padding so mobile aligns with other sections */
+        padding: 0 var(--container-padding);
+    }
+
+    .modelContainer {
+        display: none !important;
+    }
+
+    .hMarkersWrap {
+        position: relative;
+        padding: 10px 0 8px;
+        width: 100%;
+        overflow: hidden;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .hLine {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 22px;
+        height: 2px;
+        background: var(--color-border-default);
+        opacity: 0.8;
+        z-index: 0;
+    }
+
+    /* Animated progress bar for mobile timeline */
+    .hProgress {
+        position: absolute;
+        left: 0;
+        top: 20px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-accent));
+        border-radius: 999px;
+        z-index: 0;
+        transform-origin: left center;
+    }
+
+    .hMarkers {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        /* center a single marker in viewport */
+        scroll-padding-left: 50%;
+        scroll-padding-right: 50%;
+        gap: 0;
+        min-width: 0;
+    }
+
+    .hMarkers::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hMarker {
+        /* each marker takes full container width so only one is visible centered */
+        flex: 0 0 100%;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        background: transparent;
+        border: none;
+        padding: 0 0 6px;
+        cursor: pointer;
+        gap: 6px;
+        box-sizing: border-box;
+    }
+
+    .hDot {
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-surface-elevated);
+        border: 2px solid var(--color-border-default);
+        color: var(--color-text-muted);
+        font-weight: 700;
+        font-size: 12px;
+        z-index: 1;
+    }
+
+    .hDotVision {
+        border-color: var(--color-brand-primary);
+        color: var(--color-brand-primary);
+    }
+
+    .hDate {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        white-space: nowrap;
+        text-align: center;
+    }
+
+    .hMarkerActive .hDot {
+        border-color: var(--color-brand-primary);
+        color: var(--color-brand-primary);
+        transform: scale(1.15);
+    }
+
+    .hMarkerActive .hDate {
+        color: var(--color-text-primary);
+    }
+
+    .hMarkerDone .hDot {
+        background: var(--color-brand-primary);
+        border-color: var(--color-brand-primary);
+        color: #fff;
+    }
+
+    .hScroller {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 0;
+        padding: 10px 0 6px;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .hScroller::-webkit-scrollbar {
+        display: none;
+    }
+
+    .hCard {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        background: var(--color-surface-elevated);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-lg);
+        /* Slightly larger padding to match other sections */
+        padding: var(--spacing-6);
+        border: 1px solid transparent;
+        transition: border-color 180ms ease;
+        box-sizing: border-box;
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hCardActive {
+        border-color: var(--color-brand-primary);
+    }
+
+    .hCardActive {
+        border-color: var(--color-brand-primary);
+    }
+
+    .details {
+        display: none;
+    }
+
+    .header {
+        margin-bottom: var(--spacing-4);
+    }
+
+    .title {
+        font-size: 1.25rem !important;
+    }
+
+    .visionDetail {
+        padding: var(--spacing-4);
+        max-width: 100%;
+    }
+
+    .visionTitle {
+        font-size: var(--text-fluid-lg);
+    }
+
+    .visionCards {
+        gap: var(--spacing-2);
+    }
+
+    .visionCard {
+        padding: var(--spacing-3);
+    }
+}
+
+.modelLoading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 300px;
+}
+
+.modelLoadingSpinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--color-border-default);
+    border-top-color: var(--color-brand-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

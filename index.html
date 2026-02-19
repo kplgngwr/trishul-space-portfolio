@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
+                 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; 
+                 font-src https://fonts.gstatic.com; 
+                 img-src 'self' data: https://maps.gstatic.com https://maps.googleapis.com; 
+                 media-src 'self';
+                 script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://maps.googleapis.com;
+                 worker-src 'self' blob:;
+                 connect-src 'self' ws://localhost:* http://localhost:*;
+                 frame-src https://www.google.com https://maps.google.com;">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <link rel="icon" type="image/png" href="/rocket_logo.png" />
+  <!-- <link rel="icon" type="image/svg+xml" href="/logo.svg" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO Meta Tags -->
+  <title>Trishul Space</title>
+  <meta name="description"
+    content="Trishul Space delivers high-performance Methalox liquid rocket engines with AI-powered FADEC systems. Harpy-1 engine: 31kN thrust, 355s Isp, staged combustion cycle. Powering India's NewSpace revolution." />
+  <meta name="keywords"
+    content="rocket engine, liquid propulsion, Methalox, LNG LOX, staged combustion, FADEC, space startup, India aerospace, Harpy-1, SSLV" />
+  <meta name="author" content="Trishul Space" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Trishul Space" />
+  <meta property="og:description"
+    content="Indigenous, Efficient, Modular Liquid Rocket Engines for the Next Generation of Launch Vehicles" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/rocket_logo.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>
