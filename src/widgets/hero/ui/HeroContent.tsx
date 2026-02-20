@@ -79,7 +79,7 @@ export function HeroContent({ scrollYProgress, prefersReducedMotion }: HeroConte
                     />
                     <motion.div className={styles.statBadge} variants={scaleFade}>
                         <span className={styles.statValue}>Methalox</span>
-                        <span className={styles.statLabel}>Green Propulsion</span>
+                        <span className={styles.statLabel}>Propellant</span>
                     </motion.div>
                 </motion.div>
             </motion.div>
