@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
 import { motion, type MotionValue, useTransform } from 'framer-motion';
 import { Button, BoltIcon } from '@/shared/ui';
-import { fadeInUp, staggerContainer, scaleFade } from '@/shared/lib';
-import { StatItem } from './StatItem';
+import { fadeInUp, staggerContainer, /*scaleFade*/ } from '@/shared/lib';
+// import { StatItem } from './StatItem';
 import styles from './hero.module.css';
 
 interface HeroContentProps {
@@ -62,26 +62,15 @@ export function HeroContent({ scrollYProgress, prefersReducedMotion }: HeroConte
                 </motion.div>
 
                 {/* Stats with Count-up Animation */}
-                <motion.div
-                    className={styles.statsRow}
-                    variants={staggerContainer}
-                >
-                    <StatItem
-                        end={340}
-                        suffix="s"
-                        label="Specific Impulse"
-                    />
-                    <StatItem
-                        end={37}
-                        suffix=" kN"
-                        label="Vacuum Thrust"
-                        duration={1800}
-                    />
+                {/* <motion.div className={styles.statsRow} variants={staggerContainer} >
+                    <StatItem end={340} suffix="s" label="Specific Impulse"/>
+                    <StatItem end={37} suffix=" kN" label="Vacuum Thrust" duration={1800} />
                     <motion.div className={styles.statBadge} variants={scaleFade}>
                         <span className={styles.statValue}>Methalox</span>
                         <span className={styles.statLabel}>Propellant</span>
                     </motion.div>
-                </motion.div>
+                </motion.div> */}
+
             </motion.div>
         </motion.div>
     );

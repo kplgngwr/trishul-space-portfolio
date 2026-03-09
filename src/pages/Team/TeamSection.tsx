@@ -1,20 +1,12 @@
 import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { founders, type TeamMember } from '@/entities/team-member';
-// import {mentors} from '@/entities/mentor';
-import {
-    useIntersection,
-    useReducedMotion,
-    fadeInUp,
-    staggerContainer,
-    scaleFade,
-    getVariants,
-} from '@/shared/lib';
+import { founders, mentors, type TeamMember } from '@/entities/team-member';
+import { useIntersection, useReducedMotion, fadeInUp, staggerContainer, scaleFade, getVariants,} from '@/shared/lib';
 import styles from './team.module.css';
 
 const MEMBER_IMAGES: Record<string, string> = {
+    'Divyam Kashyap' : '/Divyam.jpeg',
     'Aditya Singh': '/Aditya.png',
-    'Divyam' : '/Divyam.jpeg',
     'Rajat Choudhary': '/Rajat.png',
     'Dr. Rajesh Sanghi': '/sanghi.png',
     'Dr. Hardip Rai': '/hardip.png',
@@ -90,12 +82,12 @@ export function TeamSection(): ReactNode {
                         {renderCards(founders)}
                     </div>
 
-                    {/* <div className={styles.group}>
+                    <div className={styles.group}>
                         <motion.h3 className={styles.groupTitle} variants={variants.fadeInUp}>
                             Mentors
                         </motion.h3>
                         {renderCards(mentors)}
-                    </div> */}
+                    </div>
                 </motion.div>
             </div>
         </section>
