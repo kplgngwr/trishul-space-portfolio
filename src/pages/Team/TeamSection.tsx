@@ -77,7 +77,7 @@ export function TeamSection(): ReactNode {
 
                     <div className={styles.group}>
                         <motion.h3 className={styles.groupTitle} variants={variants.fadeInUp}>
-                            Founding Team
+                            Co-Founders
                         </motion.h3>
                         {renderCards(founders)}
                     </div>

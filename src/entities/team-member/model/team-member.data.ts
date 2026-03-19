@@ -8,21 +8,21 @@ import { teamMembersSchema, type TeamMembers } from './team-member.schema';
 const rawTeamMembers = [
     {
         name: 'Divyam Kashyap',
-        role: 'Co-Founder',
+        // role: 'Co-Founder',
         description:
             'Propulsion design lead, former Skyroot Aerospace engineer with cryogenic engine expertise.',
         type: 'founder',
     },
     {
         name: 'Aditya Singh',
-        role: 'Co-Founder',
+        // role: 'Co-Founder',
         description:
             'Business strategy lead with experience at Abyom Spacetech & Defence and CIE IIIT Hyderabad.',
         type: 'founder',
     },
     {
         name: 'Rajat Choudhary',
-        role: 'Co-Founder',
+        // role: 'Co-Founder',
         description:
             'Aerospace Engineer from Chandigarh University, leads fabrication and hot-fire testing.',
         type: 'founder',

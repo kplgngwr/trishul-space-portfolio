@@ -219,8 +219,8 @@ export function ContactPage(): ReactNode {
                             </div>
                             <div className={styles.infoContent}>
                                 <h3 className={styles.infoLabel}>Phone</h3>
-                                <a href="tel:+91 93106 23937" className={styles.infoText}>
-                                    +91 93106 23937
+                                <a href="tel:+91 79065 58337" className={styles.infoText}>
+                                    +91 79065 58337
                                 </a>
                                 {/* <p className={styles.infoHint}> Mon-Fri, 10:00 AM - 6:00 PM IST </p> */}
                             </div>
