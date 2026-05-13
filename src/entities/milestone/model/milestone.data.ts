@@ -13,6 +13,7 @@ const rawMilestones = [
         description: 'Completed bench validation of a 500 N thrust demonstrator engine.',
         status: 'completed',
         specs: '500N · Gaseous Butane/O2',
+        image: '/updates/Amulya-1.png',
     },
     {
         id: 'sponsorship',
@@ -21,6 +22,7 @@ const rawMilestones = [
         description: 'Secured strategic sponsorships from Think Gas and Chandigarh University to support Sharv‑1 engine development.',
         status: 'completed',
         // specs: '5kN · Ethanol/N2O',
+        image: '/updates/Sponsorship.jpg',
     },
     {
         id: 'sharv',
@@ -29,6 +31,7 @@ const rawMilestones = [
         description: 'Executed a comprehensive hot‑fire test campaign, achieving successful operation after 13 iterative test cycles.',
         status: 'completed',
         specs: '5kN · Ethanol/N2O',
+        image: '/updates/sharv-1.jpg',
     },
     {
         id: 'incorporation',
@@ -37,6 +40,7 @@ const rawMilestones = [
         description: 'Formally incorporated as a Private Limited Company to commercialize propulsion technologies and scale operations.',
         status: 'completed',
         // specs: '',
+        image: '/updates/Incorporation.jpg',
     },
     {
         id: 'incubation_support',
@@ -45,6 +49,7 @@ const rawMilestones = [
         description: 'Incubated at FITT (IIT Delhi) and ITEL (IIT Madras) for technical and business mentorship.',
         status: 'current',
         // specs: 'Phase 2',
+        image: '/incubation.jpg',
     },
     {
         id: 'industrial_support',
@@ -53,6 +58,7 @@ const rawMilestones = [
         description: 'Awarded industrial support through initiatives including Boeing (BUILD 4.0), HDFC Bank (Parivartan Challenge), and Oil India (Drift Tech).',
         status: 'current',
         // specs: 'Phase 2',
+        image: '/partnerships.jpg',
     },
     {
         id: 'government_support',
@@ -61,6 +67,7 @@ const rawMilestones = [
         description: 'Received R&D backing from DST (NIDHI PRAYAS) and MeitY (TIDE 2.0) to advance technology development.',
         status: 'current',
         // specs: 'Phase 3',
+        image: '/government.jpg',
     },
     {
         id: 'private_funding',
@@ -69,6 +76,7 @@ const rawMilestones = [
         description: 'Closed an initial Pre-seed round with angel investors to accelerate development and early commercialization efforts.',
         status: 'current',
         // specs: 'Phase 3',
+        image: '/funding.jpg',
     },
 ] as const;
 

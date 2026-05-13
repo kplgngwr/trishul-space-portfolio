@@ -28,12 +28,12 @@ const rawTeamMembers = [
         type: 'founder',
     },
     {
-        name: 'Prof. Ashok Jhunjhunwala',
+        name: 'Ashok Jhunjhunwala',
         role: 'Strategic Business Mentor',
         type: 'mentor',
     },
     {
-        name: 'Dr. Hardip Rai',
+        name: 'Hardip Rai',
         role: 'Financial Mentor',
         type: 'mentor',
     },

@@ -41,7 +41,7 @@
 .track {
     display: flex;
     gap: var(--spacing-4);
-    animation: scroll-left 10s linear infinite;
+    animation: scroll-left 8s linear infinite;
 }
 
 .track:empty {

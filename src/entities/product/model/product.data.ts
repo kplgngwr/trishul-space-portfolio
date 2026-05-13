@@ -11,44 +11,30 @@ const rawProducts = [
         name: 'Harpy-1',
         subtitle: 'Production Engine',
         description:
-            'A cryogenic liquid engine designed for small launch vehicles and in-space propulsion with seamless integration into modern stacks.',
+            'A next-generation cryogenic rocket engine designed for high efficiency, reusability, and reliability — enabling high-performance propulsion with seamless integration into modern launch vehicles.',
+        variants: [
+            {
+                key: 'ground',
+                label: 'Ground Level',
+                thrust: '30 kN',
+                image: '/products/harpy-1-Ground.png',
+            },
+            {
+                key: 'vacuum',
+                label: 'Vacuum Level',
+                thrust: '37 kN',
+                image: '/products/harpy-1-Vacuum.png',
+            },
+        ],
         specs: [
-            { label: 'Thrust (Vacuum)', value: '37 kN' },
+            { label: 'Nominal Thrust (Vacuum)', value: '37 kN' },
             { label: 'Propellant', value: 'LOX / LNG' },
-            { label: 'Cycle', value: 'Fuel rich staged combustion' },
-            { label: 'Isp (Vacuum)', value: '340 s' },
+            { label: 'Cycle Type', value: 'Fuel-Rich Staged Combustion' },
+            // { label: 'Specific Impulse', value: '345 s' },
+            // { label: 'Burn Duration', value: '700 s' },
         ],
-        image: '/Harpy-1.png',
-        ignitorVideo: '/Torch ignitor 1.mp4',
+        image: '/updates/harpy-1.png',
         isUnderDevelopment: true,
-    },
-    {
-        id: 'sharv',
-        name: 'Sharv-1',
-        subtitle: 'Development Engine',
-        description:
-            'A green propellant demonstration engine operating on a pressure-fed cycle.',
-        specs: [
-            { label: 'Thrust', value: '5 kN' },
-            { label: 'Propellant', value: 'Ethanol / Nitrous Oxide' },
-            { label: 'Cycle', value: 'Pressure-fed' },
-            { label: 'Isp (Vacuum)', value: '280 s' },
-        ],
-        image: '/sharv-1.jpg',
-        video: '/Sharv.mp4',
-    },
-    {
-        id: 'amulya',
-        name: 'Amulya-1',
-        subtitle: 'Prototype Engine',
-        description:
-            'A demonstration engine test validating nozzle performance.',
-        specs: [
-            { label: 'Thrust', value: '500 N' },
-            { label: 'Propellant', value: 'Butane / Compressed Oxygen' },
-        ],
-        image: '/Amulya-1.png',
-        video: '/Amulya.mp4',
     },
 ] as const;
 

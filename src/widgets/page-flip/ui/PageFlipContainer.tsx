@@ -8,29 +8,13 @@ import styles from './page-flip.module.css';
 interface StackedCardProps {
     children: ReactNode;
     index: number;
-    /** If true, this section has its own scroll animation and needs special handling */
-    hasInternalScroll?: boolean;
 }
 
 /**
  * StackedCard Component
  * @description Individual card in the stack with CSS-only sticky stacking effect
  */
-function StackedCard({ children, index, hasInternalScroll }: StackedCardProps): ReactNode {
-
-    // For sections with internal scroll, we don't use sticky positioning
-    // to avoid interfering with their scroll tracking
-    if (hasInternalScroll) {
-        return (
-            <div
-                className={styles.sectionWrapperWithScroll}
-                data-card-index={index}
-            >
-                {children}
-            </div>
-        );
-    }
-
+function StackedCard({ children, index }: StackedCardProps): ReactNode {
     // Calculate z-index: earlier cards (lower index) should be behind
     // So later cards stack on top
     const zIndex = index + 1;
@@ -53,8 +37,6 @@ function StackedCard({ children, index, hasInternalScroll }: StackedCardProps): 
  */
 interface PageFlipContainerProps {
     children: ReactNode;
-    /** Indices of children that have internal scroll animations (e.g., Technology, Roadmap) */
-    internalScrollIndices?: number[];
 }
 
 /**
@@ -69,8 +51,7 @@ interface PageFlipContainerProps {
  * This uses pure CSS sticky positioning for maximum performance and reliability.
  */
 export function PageFlipContainer({
-    children,
-    internalScrollIndices = []
+    children
 }: PageFlipContainerProps): ReactNode {
     const childArray = Children.toArray(children);
 
@@ -80,7 +61,6 @@ export function PageFlipContainer({
                 <StackedCard
                     key={index}
                     index={index}
-                    hasInternalScroll={internalScrollIndices.includes(index)}
                 >
                     {isValidElement(child)
                         ? cloneElement(child as ReactElement<{ key?: Key }>, { key: index })

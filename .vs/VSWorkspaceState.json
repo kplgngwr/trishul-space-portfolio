@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\widgets",
+    "\\src\\widgets\\mission",
+    "\\src\\widgets\\mission\\ui"
+  ],
+  "SelectedNode": "\\src\\widgets\\mission\\ui\\mission.tsx",
+  "PreviewInSolutionExplorer": false
+}

@@ -1,0 +1,496 @@
+/* ============================================
+   Mission Criticality Section
+   "Propulsion is the Bottleneck"
+   ============================================ */
+
+.section {
+    padding: var(--spacing-16) 0;
+    background: var(--color-surface-primary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--spacing-8);
+}
+
+/* Subtle grid background for depth */
+.section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--color-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.gridWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    position: relative;
+    z-index: 1;
+}
+
+/* ---- Header ---- */
+.sectionHeader {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    font-size: var(--text-fluid-3xl);
+    margin-bottom: var(--spacing-4);
+    max-width: 45ch;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+
+.subtitle {
+    font-size: var(--text-fluid-base);
+    color: var(--color-text-secondary);
+    max-width: 54ch;
+    line-height: 1.7;
+    text-align: center;
+}
+
+/* ---- Main Layout ---- */
+.mainGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: var(--spacing-6);
+    align-items: center;
+    margin: var(--spacing-6) 0;
+}
+
+/* ---- Left: Content ---- */
+.contentSide {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+}
+
+.description {
+    font-size: var(--text-fluid-base);
+    color: var(--color-text-secondary);
+    line-height: 1.75;
+    max-width: none;
+    text-align: justify; /* Justified for an editorial look */
+}
+
+/* ---- Stats Grid ---- */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-4);
+}
+
+.statCard {
+    position: relative;
+    padding: var(--spacing-6) var(--spacing-4);
+    background: linear-gradient(135deg, var(--color-surface-elevated) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(30, 64, 175, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    transition:
+        border-color var(--duration-base) ease-out,
+        box-shadow var(--duration-base) ease-out,
+        transform var(--duration-base) var(--ease-out-expo),
+        background var(--duration-base) ease-out;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.statCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-brand-primary), var(--color-brand-accent));
+    opacity: 0;
+    transition: opacity var(--duration-base) ease-out;
+}
+
+.statCard::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(30, 64, 175, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) ease-out;
+}
+
+.statCard:hover {
+    border-color: rgba(30, 64, 175, 0.3);
+    box-shadow: 0 12px 24px rgba(30, 64, 175, 0.12);
+    transform: translateY(-4px);
+    background: linear-gradient(135deg, var(--color-surface-elevated) 0%, rgba(59, 130, 246, 0.03) 100%);
+}
+
+.statCard:hover::before {
+    opacity: 1;
+}
+
+.statCard:hover::after {
+    opacity: 1;
+}
+
+.statIconRow {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.statIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-lg);
+    flex-shrink: 0;
+    position: relative;
+    transition: all var(--duration-base) ease-out;
+}
+
+.statIcon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--duration-base) ease-out;
+}
+
+.statCard:hover .statIcon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.statIcon.warning {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(249, 115, 22, 0.05) 100%);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.2);
+}
+
+.statIcon.warning::before {
+    background: radial-gradient(circle, rgba(249, 115, 22, 0.2) 0%, transparent 70%);
+}
+
+.statCard:hover .statIcon.warning {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.25) 0%, rgba(249, 115, 22, 0.1) 100%);
+    box-shadow: 0 0 16px rgba(249, 115, 22, 0.2);
+}
+
+.statCard:hover .statIcon.warning::before {
+    opacity: 1;
+}
+
+.statIcon.cost {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.15) 0%, rgba(30, 64, 175, 0.05) 100%);
+    color: #1e40af;
+    border: 1px solid rgba(30, 64, 175, 0.2);
+}
+
+.statIcon.cost::before {
+    background: radial-gradient(circle, rgba(30, 64, 175, 0.2) 0%, transparent 70%);
+}
+
+.statCard:hover .statIcon.cost {
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.25) 0%, rgba(30, 64, 175, 0.1) 100%);
+    box-shadow: 0 0 16px rgba(30, 64, 175, 0.2);
+}
+
+.statCard:hover .statIcon.cost::before {
+    opacity: 1;
+}
+
+.statIcon.complexity {
+    background: linear-gradient(135deg, rgba(100, 116, 139, 0.15) 0%, rgba(100, 116, 139, 0.05) 100%);
+    color: #64748b;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+}
+
+.statIcon.complexity::before {
+    background: radial-gradient(circle, rgba(100, 116, 139, 0.2) 0%, transparent 70%);
+}
+
+.statCard:hover .statIcon.complexity {
+    background: linear-gradient(135deg, rgba(100, 116, 139, 0.25) 0%, rgba(100, 116, 139, 0.1) 100%);
+    box-shadow: 0 0 16px rgba(100, 116, 139, 0.2);
+}
+
+.statCard:hover .statIcon.complexity::before {
+    opacity: 1;
+}
+
+.statLabel {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-muted);
+}
+
+.statValue {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-3xl);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, var(--color-brand-primary-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.statCard:nth-child(2) .statValue {
+    background: linear-gradient(135deg, var(--color-brand-accent) 0%, #ea580c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.statDesc {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+    line-height: 1.5;
+}
+
+/* ---- Right: Visual ---- */
+.visualSide {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding-left: var(--spacing-2);
+}
+
+.engineImage {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    aspect-ratio: 4 / 3;
+    filter: none;
+}
+
+/* ---- Necessity Section (bottom) ---- */
+.necessityBar {
+    padding: var(--spacing-10) var(--spacing-10);
+    /* Cinematic Earth Background */
+    background-color: #9d9ab1;
+    background-image: 
+        linear-gradient(90deg, #f7f6f8 0%, transparent 100%),
+        url('/assets/earth.png');
+    background-position: center, right center;
+    background-size: cover, contain;
+    background-repeat: no-repeat;
+    
+    border-radius: var(--radius-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    color: var(--color-text-inverse);
+    position: relative;
+    overflow: hidden;
+    /* border: 1px solid rgba(248, 238, 238, 0.05); */
+    backdrop-filter: blur(8px);
+    transition: all var(--duration-base) ease-out;
+}
+
+/* .necessityBar::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(249, 115, 22, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-base) ease-out;
+    border-radius: inherit;
+} */
+
+.necessityBar:hover::before {
+    opacity: 1;
+}
+
+/* .necessityBar:hover {
+    border-color: rgba(249, 115, 22, 0.1);
+    background: linear-gradient(135deg, var(--color-surface-inverse) 0%, rgba(175, 137, 106, 0.95) 100%);
+} */
+
+.necessityLabel {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(26, 7, 110, 0.8);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.necessityDivider {
+    width: 1px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+}
+
+.necessityText {
+    font-size: var(--text-fluid-sm);
+    color: rgba(26, 7, 110, 0.8);
+    line-height: 1.6;
+    max-width: none;
+}
+
+.necessityText strong {
+    color: rgba(26, 7, 110, 0.8);
+    font-weight: 600;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .mainGrid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-8);
+    }
+
+    .visualSide {
+        order: -1;
+        min-height: 320px;
+        padding-left: 0;
+    }
+
+    .engineImage {
+        max-height: 420px;
+    }
+
+    .necessityBar {
+        flex-direction: column;
+        gap: var(--spacing-4);
+        text-align: center;
+        padding: var(--spacing-6);
+    }
+
+    .necessityDivider {
+        width: 40px;
+        height: 1px;
+    }
+}
+
+@media (max-width: 768px) {
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-3);
+    }
+
+    .statCard {
+        padding: var(--spacing-4) var(--spacing-3);
+    }
+
+    .statIcon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .statLabel {
+        font-size: var(--text-fluid-2xs);
+    }
+
+    .statValue {
+        font-size: var(--text-fluid-2xl);
+    }
+
+    .statDesc {
+        font-size: var(--text-fluid-2xs);
+    }
+
+    .engineImage {
+        max-height: 360px;
+    }
+}
+
+@media (max-width: 640px) {
+    .section {
+        min-height: auto;
+        padding: var(--spacing-8) 0;
+    }
+
+    .title {
+        font-size: clamp(1.5rem, 5vw, 2rem) !important;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-3);
+    }
+
+    .statCard {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-4);
+        padding: var(--spacing-4);
+    }
+
+    .statCard:hover {
+        transform: translateY(-2px);
+    }
+
+    .statIcon {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+    }
+
+    .statCard:hover .statIcon {
+        transform: scale(1.05) rotate(-3deg);
+    }
+
+    .statValue {
+        font-size: var(--text-fluid-2xl);
+        white-space: nowrap;
+    }
+
+    .statMeta {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-1);
+    }
+
+    .engineImage {
+        max-height: 280px;
+    }
+
+    .visualSide {
+        min-height: 260px;
+    }
+
+    .necessityBar {
+        padding: var(--spacing-4);
+        border-radius: var(--radius-lg);
+    }
+
+    .necessityText {
+        font-size: var(--text-fluid-xs);
+    }
+}

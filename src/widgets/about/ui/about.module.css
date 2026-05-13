@@ -41,6 +41,19 @@
     overflow: hidden;
     background: var(--color-surface-primary);
     height: 100%;
+    isolation: isolate;
+}
+
+.gallery::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(15, 23, 42, 0.34), transparent 22%, transparent 78%, rgba(15, 23, 42, 0.28)),
+        linear-gradient(180deg, transparent 58%, rgba(15, 23, 42, 0.28));
+    opacity: 0.72;
 }
 
 @media (max-width: 640px) {
@@ -57,6 +70,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    will-change: opacity, transform;
 }
 
 /* Gallery Navigation Dots */
@@ -69,7 +83,8 @@
     bottom: var(--spacing-3);
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.4);
+    z-index: 3;
+    background: rgba(15, 23, 42, 0.58);
     backdrop-filter: blur(8px);
     border-radius: var(--radius-full);
     padding: var(--spacing-2) var(--spacing-4);
@@ -82,17 +97,69 @@
     background: rgba(255, 255, 255, 0.4);
     border: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background var(--duration-fast) ease-out, transform var(--duration-fast) ease-out;
     padding: 0;
 }
 
 .galleryDot:hover {
     background: rgba(255, 255, 255, 0.7);
+    transform: scale(1.15);
 }
 
 .galleryDotActive {
     background: white;
     transform: scale(1.2);
+}
+
+.galleryArrow {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.72);
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+    transform: translateY(-50%) scale(0.96);
+    transition:
+        opacity var(--duration-base) ease-out,
+        transform var(--duration-base) var(--ease-out-expo),
+        background var(--duration-fast) ease-out,
+        border-color var(--duration-fast) ease-out;
+}
+
+.gallery:hover .galleryArrow,
+.gallery:focus-within .galleryArrow {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) scale(1);
+}
+
+.galleryArrow:hover {
+    background: var(--color-brand-primary);
+    border-color: rgba(255, 255, 255, 0.38);
+}
+
+.galleryArrow:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 3px;
+}
+
+.galleryArrowLeft {
+    left: var(--spacing-4);
+}
+
+.galleryArrowRight {
+    right: var(--spacing-4);
 }
 
 /* Content Column */
@@ -104,7 +171,7 @@
 }
 
 .title {
-    font-size: var(--text-fluid-2xl);
+    font-size: var(--text-fluid-3xl);
     margin-bottom: var(--spacing-3);
 }
 
@@ -306,6 +373,21 @@
 
     .badgeText {
         font-size: 0.65rem;
+    }
+
+    .galleryArrow {
+        width: 38px;
+        height: 38px;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .galleryArrowLeft {
+        left: var(--spacing-3);
+    }
+
+    .galleryArrowRight {
+        right: var(--spacing-3);
     }
 
     .founderCard {

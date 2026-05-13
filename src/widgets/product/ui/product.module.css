@@ -1,0 +1,442 @@
+/* ============================================
+   Product Section
+   Professional Aerospace-Grade Presentation
+   ============================================ */
+
+.section {
+    padding: var(--spacing-16) 0;
+    background: var(--color-surface-primary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: var(--spacing-8);
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--color-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.gridWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+    position: relative;
+    z-index: 1;
+}
+
+.sectionHeader {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100%, 68rem);
+    margin-inline: auto;
+    gap: var(--spacing-3);
+}
+
+.title {
+    font-size: var(--text-fluid-3xl);
+    margin-bottom: 0;
+    max-width: 20ch;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    width: min(100%, 68rem);
+    max-width: none;
+    font-size: clamp(0.98rem, 0.88rem + 0.25vw, 1.06rem);
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+    text-align: center;
+    text-wrap: balance;
+}
+
+.mainGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-8);
+    align-items: start;
+    margin: var(--spacing-6) 0;
+}
+
+.visualSide {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    padding: var(--spacing-2) 0;
+}
+
+.productImage {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    will-change: opacity, transform;
+    filter: none;
+    display: block;
+    aspect-ratio: 4 / 3;
+}
+
+.arrowButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    padding: var(--spacing-6);
+    cursor: pointer;
+    color: var(--color-text-inverse);
+    opacity: 0.5;
+    transition: opacity var(--duration-base) ease-out;
+}
+
+.arrowButton:hover {
+    opacity: 0.9;
+}
+
+.arrowButton:first-of-type {
+    left: var(--spacing-4);
+}
+
+.arrowButton:last-of-type {
+    right: var(--spacing-4);
+}
+
+.contentSide {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.topMetaRow {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--spacing-4);
+    align-items: start;
+}
+
+.variantBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.variantTabs {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-5);
+    width: fit-content;
+}
+
+.variantTab {
+    position: relative;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--duration-base) ease-out;
+    text-transform: capitalize;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+}
+
+.variantTab:hover {
+    color: var(--color-text-primary);
+}
+
+.variantTab.active {
+    color: var(--color-brand-primary);
+}
+
+.variantTab.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.35rem;
+    height: 1px;
+    background: var(--color-brand-primary);
+    opacity: 0.8;
+}
+
+.heroMetric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    justify-self: end;
+    text-align: right;
+}
+
+.heroValue {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-3xl);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-brand-primary);
+}
+
+.heroLabel {
+    font-size: var(--text-fluid-sm);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.specsTable {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.specRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4);
+    padding: var(--spacing-4) 0;
+    border-bottom: 1px solid rgba(30, 64, 175, 0.08);
+    align-items: center;
+}
+
+.specRow:last-child {
+    border-bottom: none;
+}
+
+.specLabel {
+    font-size: var(--text-fluid-xs);
+    color: var(--color-text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.specValue {
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: right;
+}
+
+.ctaSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding-top: var(--spacing-4);
+}
+
+.ctaRow {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-4);
+}
+
+.ctaButton {
+    padding: var(--spacing-3) var(--spacing-6);
+    border-radius: var(--radius-full);
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-sm);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--duration-base) ease-out;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.ctaButton.primary {
+    background: linear-gradient(135deg, var(--color-brand-primary) 0%, #1e3a8a 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
+}
+
+.ctaButton.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.35);
+}
+
+.ctaButton.secondary {
+    background: rgba(15, 23, 42, 0.02);
+    color: var(--color-text-primary);
+    border: 1px solid rgba(30, 64, 175, 0.18);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+
+.ctaButton.secondary:hover {
+    transform: translateY(-2px);
+    border-color: rgba(30, 64, 175, 0.32);
+    background: rgba(30, 64, 175, 0.04);
+}
+
+.textCta {
+    background: transparent;
+    border: none;
+    color: var(--color-brand-primary);
+    font-family: var(--font-display);
+    font-size: var(--text-fluid-xs);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--spacing-2) 0;
+    text-align: left;
+    transition: color var(--duration-base) ease-out;
+}
+
+.textCta:hover {
+    color: #1e3a8a;
+}
+
+@media (max-width: 1024px) {
+    .mainGrid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-8);
+    }
+
+    .topMetaRow {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-4);
+    }
+
+    .heroMetric {
+        justify-self: start;
+        text-align: left;
+    }
+
+    .visualSide {
+        order: -1;
+        min-height: 320px;
+        padding: 0;
+    }
+
+    .specValue {
+        text-align: left;
+    }
+
+    .specRow {
+        grid-template-columns: auto 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        min-height: auto;
+        padding: var(--spacing-12) 0;
+    }
+
+    .mainGrid {
+        gap: var(--spacing-6);
+    }
+
+    .heroValue {
+        font-size: var(--text-fluid-3xl);
+    }
+
+    .productImage {
+        max-height: 380px;
+        width: auto;
+        margin: 0 auto;
+    }
+
+    .variantTab {
+        font-size: 0.75rem;
+    }
+
+    .ctaSection {
+        gap: var(--spacing-3);
+    }
+
+    .ctaRow {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-3);
+    }
+}
+
+@media (max-width: 640px) {
+    .section {
+        padding: var(--spacing-8) 0;
+        margin-bottom: var(--spacing-4);
+    }
+
+    .sectionHeader {
+        margin-bottom: var(--spacing-4);
+    }
+
+    .title {
+        font-size: var(--text-fluid-3xl);
+        max-width: 100%;
+    }
+
+    .subtitle {
+        width: min(100%, 42rem);
+        font-size: var(--text-fluid-xs);
+        line-height: 1.6;
+    }
+
+    .mainGrid {
+        gap: var(--spacing-6);
+    }
+
+    .heroValue {
+        font-size: var(--text-fluid-2xl);
+    }
+
+    .heroLabel {
+        font-size: 0.75rem;
+    }
+
+    .specRow {
+        padding: var(--spacing-3) 0;
+        gap: var(--spacing-2);
+    }
+
+    .specLabel {
+        font-size: 0.65rem;
+    }
+
+    .specValue {
+        font-size: var(--text-fluid-xs);
+    }
+
+    .variantTab {
+        font-size: 0.65rem;
+    }
+
+    .productImage {
+        max-height: 300px;
+        width: auto;
+    }
+
+    .ctaButton {
+        padding: var(--spacing-2) var(--spacing-5);
+        font-size: 0.75rem;
+    }
+
+    .ctaRow {
+        gap: var(--spacing-2);
+    }
+
+    .textCta {
+        font-size: 0.65rem;
+    }
+}

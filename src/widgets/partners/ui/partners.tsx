@@ -52,12 +52,13 @@ export function Partners(): ReactNode {
 
                     {groupedPartners.map((group) => (
                         <motion.div className={styles.group} key={group.key} variants={variants.fadeInUp}>
-                            <motion.h3 className={styles.groupLabel} variants={variants.fadeInUp}>
-                                {group.label}
-                            </motion.h3>
+
+                            {/* <motion.h3 className={styles.groupLabel} variants={variants.fadeInUp}> {group.label} </motion.h3> */}
+
                             {group.autoScroll && !prefersReducedMotion ? (
                                 <motion.div className={styles.carousel} variants={variants.staggerContainer}>
                                     <motion.div className={styles.track} variants={variants.staggerContainer}>
+
                                         {[...group.partners, ...group.partners].map((partner, index) => (
                                             <motion.a
                                                 key={`${group.key}-${partner.name}-${index}`}
@@ -67,28 +68,18 @@ export function Partners(): ReactNode {
                                                 className={`${styles.card} ${partner.isDark ? styles.darkCard : ''}`}
                                                 variants={variants.scaleFade}
                                             >
-                                                <div className={styles.logo}>
-                                                    <img src={partner.logo} alt={partner.name} />
-                                                </div>
+                                                <div className={styles.logo}> <img src={partner.logo} alt={partner.name} /> </div>
                                                 <span className={styles.name}>{partner.name}</span>
                                             </motion.a>
                                         ))}
                                     </motion.div>
                                 </motion.div>
+                                
                             ) : (
                                 <motion.div className={styles.staticList} variants={variants.staggerContainer}>
                                     {group.partners.map((partner) => (
-                                        <motion.a
-                                            key={`${group.key}-${partner.name}`}
-                                            href={partner.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`${styles.card} ${partner.isDark ? styles.darkCard : ''}`}
-                                            variants={variants.scaleFade}
-                                        >
-                                            <div className={styles.logo}>
-                                                <img src={partner.logo} alt={partner.name} />
-                                            </div>
+                                        <motion.a key={`${group.key}-${partner.name}`} href={partner.url} target="_blank" rel="noopener noreferrer" className={`${styles.card} ${partner.isDark ? styles.darkCard : ''}`} variants={variants.scaleFade} >
+                                            <div className={styles.logo}> <img src={partner.logo} alt={partner.name} /> </div>
                                             <span className={styles.name}>{partner.name}</span>
                                         </motion.a>
                                     ))}

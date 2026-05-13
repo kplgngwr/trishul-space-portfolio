@@ -14,6 +14,7 @@ export const milestoneSchema = z.object({
     description: z.string().min(10, 'Description must be at least 10 characters'),
     status: milestoneStatusSchema,
     specs: z.string().optional(),
+    image: z.string().optional(),
 });
 
 export const milestonesSchema = z.array(milestoneSchema);

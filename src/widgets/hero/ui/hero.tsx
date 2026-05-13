@@ -20,11 +20,8 @@ export function Hero(): ReactNode {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
-    // Scroll-based parallax
-    const { scrollYProgress } = useScroll({
-        target: sectionRef,
-        offset: ['start start', 'end start'],
-    });
+    // Scroll-based parallax (global scroll)
+    const { scrollYProgress } = useScroll();
 
     // Cache rect on mount and resize
     useEffect(() => {

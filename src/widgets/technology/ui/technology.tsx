@@ -1,14 +1,15 @@
-import { useRef, useState, useCallback, useEffect, type ReactNode } from 'react';
+import { useRef, useState, useCallback, Suspense, type ReactNode } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import {
     motion,
     AnimatePresence,
     useMotionValue,
-    useTransform,
     animate,
 } from 'framer-motion';
-import { products, type Product } from '@/entities/product';
-import { Button, PlayIcon, CloseIcon } from '@/shared/ui';
+import { products } from '@/entities/product';
+import { ErrorFallback } from '@/shared/ui';
 import { useReducedMotion, EASE_OUT_EXPO } from '@/shared/lib';
+import { RocketModel } from './RocketModel';
 import styles from './technology.module.css';
 
 /**
@@ -17,29 +18,17 @@ import styles from './technology.module.css';
  */
 export function Technology(): ReactNode {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [activeIndex, setActiveIndex] = useState<number>(0);
-    const [playingVideo, setPlayingVideo] = useState<{ productId: string; videoType: 'engine' | 'ignitor' } | null>(null);
-    const [isAutoPlay, setIsAutoPlay] = useState(false);
-    const autoPlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const prefersReducedMotion = useReducedMotion();
 
     // Progress value that can be controlled manually when tabs change
     const progressValue = useMotionValue(0);
 
-    // Transform progress to percentage for the bar height
-    const lineProgress = useTransform(progressValue, [0, 1], ['0%', '100%']);
+    const [activeIndex, setActiveIndex] = useState<number>(0);
 
     const handleTabClick = useCallback((index: number): void => {
         if (!containerRef.current) return;
 
         setActiveIndex(index);
-        setPlayingVideo(null);
-        setIsAutoPlay(false);
-
-        // Clear any existing auto-play timer
-        if (autoPlayTimerRef.current) {
-            clearTimeout(autoPlayTimerRef.current);
-        }
 
         // Calculate and animate progress bar to match selected tab
         const targetProgress = (index + 0.5) / products.length;
@@ -58,40 +47,9 @@ export function Technology(): ReactNode {
             top: targetScrollY,
             behavior: prefersReducedMotion ? 'auto' : 'smooth'
         });
-
-        // Set up auto-play timer for 3 seconds
-        autoPlayTimerRef.current = setTimeout(() => {
-            const product = products[index];
-            if (product?.video || product?.ignitorVideo) {
-                const videoType = product.video ? 'engine' : 'ignitor';
-                setPlayingVideo({ productId: product.id, videoType });
-                setIsAutoPlay(true);
-            }
-        }, 3000); // 3 seconds
     }, [prefersReducedMotion, progressValue]);
 
-    const handleWatchVideo = (productId: string, videoType: 'engine' | 'ignitor' = 'engine'): void => {
-        // Clear any existing auto-play timer
-        if (autoPlayTimerRef.current) {
-            clearTimeout(autoPlayTimerRef.current);
-        }
-        setPlayingVideo({ productId, videoType });
-        setIsAutoPlay(false); // Manual play - loop enabled
-    };
 
-    const handleCloseVideo = (): void => {
-        setPlayingVideo(null);
-        setIsAutoPlay(false);
-    };
-
-    // Cleanup timer on unmount
-    useEffect(() => {
-        return () => {
-            if (autoPlayTimerRef.current) {
-                clearTimeout(autoPlayTimerRef.current);
-            }
-        };
-    }, []);
 
     return (
         <section
@@ -158,37 +116,6 @@ export function Technology(): ReactNode {
                                                                 </span>
                                                             ))}
                                                         </div>
-                                                        <div className={styles.videoButtons}>
-                                                            {product.video && (
-                                                                <button
-                                                                    type="button"
-                                                                    className={styles.watchBtn}
-                                                                    onClick={(e): void => {
-                                                                        e.stopPropagation();
-                                                                        handleWatchVideo(product.id, 'engine');
-                                                                    }}
-                                                                >
-                                                                    <PlayIcon size={16} />
-                                                                    Engine Test
-                                                                </button>
-                                                            )}
-                                                            {product.ignitorVideo && (
-                                                                <button
-                                                                    type="button"
-                                                                    className={styles.watchBtn}
-                                                                    onClick={(e): void => {
-                                                                        e.stopPropagation();
-                                                                        handleWatchVideo(product.id, 'ignitor');
-                                                                    }}
-                                                                >
-                                                                    <PlayIcon size={16} />
-                                                                    Ignitor Test
-                                                                </button>
-                                                            )}
-                                                            {!product.video && !product.ignitorVideo && (
-                                                                <div className={styles.videoNote}>Engine under development</div>
-                                                            )}
-                                                        </div>
                                                     </motion.div>
                                                 )}
                                             </AnimatePresence>
@@ -197,38 +124,18 @@ export function Technology(): ReactNode {
                                 })}
                             </ul>
 
-                            <Button
-                                as="a"
-                                href="/product"
-                                variant="primary"
-                                className={styles.cta}
-                            >
-                                Explore Products
-                            </Button>
+                            {/* <Button as="a" href="/product" variant="primary" className={styles.cta} > Explore Products </Button> */}
                         </div>
 
                         {/* Right Side - Media */}
                         <div className={styles.mediaContainer}>
                             <div className={styles.mediaWrapper}>
-                                <div className={styles.progressTrack}>
-                                    <motion.div
-                                        className={styles.progressFill}
-                                        style={{ height: lineProgress }}
-                                    />
-                                </div>
-
                                 <div className={styles.mediaStack}>
-                                    {products.map((product, index) => (
-                                        <MediaItem
-                                            key={product.id}
-                                            product={product}
-                                            isActive={index === activeIndex}
-                                            playingVideo={playingVideo}
-                                            isAutoPlay={isAutoPlay}
-                                            onCloseVideo={handleCloseVideo}
-                                            prefersReducedMotion={prefersReducedMotion}
-                                        />
-                                    ))}
+                                    <ErrorBoundary FallbackComponent={ErrorFallback}>
+                                        <Suspense fallback={<div className={styles.modelLoading} />}>
+                                            <RocketModel />
+                                        </Suspense>
+                                    </ErrorBoundary>
                                 </div>
                             </div>
                         </div>
@@ -236,80 +143,5 @@ export function Technology(): ReactNode {
                 </div>
             </div>
         </section >
-    );
-}
-
-interface MediaItemProps {
-    product: Product;
-    isActive: boolean;
-    playingVideo: { productId: string; videoType: 'engine' | 'ignitor' } | null;
-    isAutoPlay: boolean;
-    onCloseVideo: () => void;
-    prefersReducedMotion: boolean;
-}
-
-function MediaItem({
-    product,
-    isActive,
-    playingVideo,
-    isAutoPlay,
-    onCloseVideo,
-    prefersReducedMotion,
-}: MediaItemProps): ReactNode {
-    const isVideoPlaying = playingVideo?.productId === product.id;
-    const videoSrc = playingVideo?.videoType === 'ignitor' ? product.ignitorVideo : product.video;
-    const videoRef = useRef<HTMLVideoElement>(null);
-
-    const handleVideoEnd = useCallback(() => {
-        if (isAutoPlay) {
-            onCloseVideo();
-        }
-    }, [isAutoPlay, onCloseVideo]);
-
-    return (
-        <motion.div
-            className={`${styles.mediaItem} ${isActive ? styles.mediaActive : ''}`}
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.96 }}
-            transition={{ duration: prefersReducedMotion ? 0.01 : 0.3 }}
-        >
-            <img
-                src={product.image}
-                alt={product.name}
-                className={`${styles.mediaImage} ${isVideoPlaying ? styles.hidden : ''}`}
-            />
-
-            <AnimatePresence>
-                {isVideoPlaying && videoSrc && (
-                    <motion.div
-                        className={styles.videoOverlay}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: prefersReducedMotion ? 0.01 : 0.3 }}
-                    >
-                        <video
-                            ref={videoRef}
-                            className={`${styles.mediaVideo} ${product.id === 'sharv' ? styles.videoFlipped : ''}`}
-                            autoPlay
-                            loop={false}
-                            muted
-                            playsInline
-                            onEnded={handleVideoEnd}
-                        >
-                            <source src={videoSrc} type="video/mp4" />
-                        </video>
-                        <button
-                            type="button"
-                            className={styles.closeBtn}
-                            onClick={onCloseVideo}
-                            aria-label="Close video"
-                        >
-                            <CloseIcon size={20} />
-                        </button>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </motion.div>
     );
 }
