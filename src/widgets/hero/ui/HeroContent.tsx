@@ -48,7 +48,7 @@ export function HeroContent({ scrollYProgress, prefersReducedMotion }: HeroConte
                 <motion.div className={styles.ctaRow} variants={fadeInUp}>
                     <Button
                         as="a"
-                        href="#technology"
+                        href="#product"
                         variant="primary"
                         size="lg"
                         icon={<BoltIcon />}
