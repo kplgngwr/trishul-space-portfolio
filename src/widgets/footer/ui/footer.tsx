@@ -19,12 +19,12 @@ const SOCIAL_LINKS = [
     icon: LinkedInIcon,
     external: true,
   },
-  // {
-  //   name: "Twitter",
-  //   href: "https://twitter.com/TrishulAerospac",
-  //   icon: TwitterIcon,
-  //   external: true,
-  // },
+  {
+    name: "Twitter",
+    href: "https://twitter.com/TrishulAerospac",
+    icon: TwitterIcon,
+    external: true,
+  },
   {
     name: "Email",
     href: "mailto:info@trishulspace.com",
