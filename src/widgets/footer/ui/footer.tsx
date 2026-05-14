@@ -35,9 +35,7 @@ const SOCIAL_LINKS = [
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "Technology", href: "/#technology" },
-  { label: "About", href: "/#about" },
-  { label: "Roadmap", href: "/#roadmap" },
+  { label: "Product", href: "/#product" },
 ] as const;
 
 const COMPANY_LINKS = [

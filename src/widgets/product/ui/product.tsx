@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     useIntersection,
@@ -14,6 +15,7 @@ import { products } from '@/entities/product';
 import styles from './product.module.css';
 
 export function Product(): ReactNode {
+    const navigate = useNavigate();
     const { ref, hasIntersected } = useIntersection<HTMLElement>({ threshold: 0.15 });
     const prefersReducedMotion = useReducedMotion();
 
@@ -148,7 +150,7 @@ export function Product(): ReactNode {
                             {/* CTA area */}
                             <motion.div className={styles.ctaSection} variants={variants.fadeInUp}>
                                 <div className={styles.ctaRow}>
-                                    <button className={`${styles.ctaButton} ${styles.primary}`}>Request Specifications</button>
+                                    <button className={`${styles.ctaButton} ${styles.primary}`} onClick={() => navigate('/contact')}>Request Specifications</button>
                                     {/* <button className={`${styles.ctaButton} ${styles.secondary}`}>Download Datasheet</button> */}
                                 </div>
                                 {/* <button className={styles.textCta}>Request Specifications</button> */}

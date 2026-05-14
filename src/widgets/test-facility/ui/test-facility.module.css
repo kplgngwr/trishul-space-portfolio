@@ -10,9 +10,9 @@
     overflow: hidden;
     padding: var(--spacing-12) 0;
     isolation: isolate;
-    --ambient-video-scale: 1.08;
-    --ambient-video-blur: 6px;
-    --ambient-video-opacity: 0.95;
+    --ambient-video-scale: 1.03;
+    --ambient-video-blur: 2px;
+    --ambient-video-opacity: 2.65;
 }
 
 .ambientVideo {
@@ -238,9 +238,9 @@
     .section {
         min-height: auto;
         padding: var(--spacing-10) 0;
-        --ambient-video-scale: 1.05;
-        --ambient-video-blur: 6px;
-        --ambient-video-opacity: 0.95;
+    --ambient-video-scale: 1.03;
+    --ambient-video-blur: 2px;
+    --ambient-video-opacity: 2.65;
     }
 
     .backgroundOverlay {
@@ -284,8 +284,8 @@
     .section {
         padding: var(--spacing-8) 0;
         --ambient-video-scale: 1.03;
-        --ambient-video-blur: 6px;
-        --ambient-video-opacity: 0.95;
+        --ambient-video-blur: 2px;
+        --ambient-video-opacity: 2.65;
     }
 
     .sectionFrame {
