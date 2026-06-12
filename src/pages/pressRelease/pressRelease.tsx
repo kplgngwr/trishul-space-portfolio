@@ -233,11 +233,16 @@ export function PressReleasePage(): ReactNode {
             const sourceName = post.source ?? "Publisher";
             const sourceLogo = isExternal ? SOURCE_LOGOS[sourceName] : undefined;
 
+            const hasCoverImage = post.image &&
+              post.image !== "/press" &&
+              post.image !== "/pressRelease" &&
+              post.image.trim() !== "";
+
             // Card content (reused in both internal and external)
             const cardContent = (
               <>
                 <div className={styles.imageWrapper}>
-                  {isExternal ? (
+                  {isExternal && !hasCoverImage ? (
                     <div className={styles.externalMedia}>
                       {sourceLogo ? (
                         <div className={styles.sourceLogoPlate}>
@@ -258,7 +263,7 @@ export function PressReleasePage(): ReactNode {
                     <img
                       src={post.image}
                       alt={post.title}
-                      className={styles.image}
+                      className={isExternal ? styles.externalCoverImage : styles.image}
                       loading="lazy"
                     />
                   )}

@@ -13,7 +13,7 @@ import {
   animate,
   AnimatePresence,
 } from "framer-motion";
-import { milestones, visionItems } from "@/entities/milestone";
+import { milestones } from "@/entities/milestone";
 import { CheckIcon, LayersIcon } from "@/shared/ui";
 import { useReducedMotion, EASE_OUT_EXPO, slideChange } from "@/shared/lib";
 import styles from "./milestone.module.css";
@@ -31,7 +31,7 @@ export function MilestonePage(): ReactNode {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isManualNavigation, setIsManualNavigation] = useState<boolean>(false);
   const prefersReducedMotion = useReducedMotion();
-  const totalSteps = milestones.length + 1; // +1 for vision
+  const totalSteps = milestones.length;
 
   const progressValue = useMotionValue(0);
   const { scrollYProgress } = useScroll();
@@ -81,10 +81,98 @@ export function MilestonePage(): ReactNode {
   );
 
   const activeIndexRef = useRef(activeIndex);
+  const lastScrollTime = useRef<number>(0);
+  const scrollCooldown = 600; // 600ms cooldown for smooth transitions
 
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
+
+  // Desktop Scroll (wheel/swipe) Navigation
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || isCompactTimeline) return;
+
+    const handleWheel = (e: WheelEvent): void => {
+      if (isManualNavigation) {
+        e.preventDefault();
+        return;
+      }
+
+      const now = Date.now();
+      const deltaY = e.deltaY;
+
+      // Ignore small inputs to prevent jitter
+      if (Math.abs(deltaY) < 15) return;
+
+      const isScrollingDown = deltaY > 0;
+      const isScrollingUp = deltaY < 0;
+      const isPageScrolled = window.scrollY > 10;
+
+      if (isScrollingDown && activeIndex < totalSteps - 1) {
+        e.preventDefault();
+        if (now - lastScrollTime.current > scrollCooldown) {
+          setActiveIndex((prev) => Math.min(prev + 1, totalSteps - 1));
+          lastScrollTime.current = now;
+        }
+      } else if (isScrollingUp && activeIndex > 0 && !isPageScrolled) {
+        e.preventDefault();
+        if (now - lastScrollTime.current > scrollCooldown) {
+          setActiveIndex((prev) => Math.max(prev - 1, 0));
+          lastScrollTime.current = now;
+        }
+      }
+    };
+
+    let touchStartY = 0;
+    const handleTouchStart = (e: TouchEvent): void => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent): void => {
+      if (isManualNavigation) {
+        e.preventDefault();
+        return;
+      }
+
+      const touchEndY = e.touches[0].clientY;
+      const deltaY = touchStartY - touchEndY; // Positive is swipe up (scroll down)
+
+      if (Math.abs(deltaY) < 30) return;
+
+      const isScrollingDown = deltaY > 0;
+      const isScrollingUp = deltaY < 0;
+      const isPageScrolled = window.scrollY > 10;
+
+      if (isScrollingDown && activeIndex < totalSteps - 1) {
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime.current > scrollCooldown) {
+          setActiveIndex((prev) => Math.min(prev + 1, totalSteps - 1));
+          lastScrollTime.current = now;
+          touchStartY = touchEndY;
+        }
+      } else if (isScrollingUp && activeIndex > 0 && !isPageScrolled) {
+        e.preventDefault();
+        const now = Date.now();
+        if (now - lastScrollTime.current > scrollCooldown) {
+          setActiveIndex((prev) => Math.max(prev - 1, 0));
+          lastScrollTime.current = now;
+          touchStartY = touchEndY;
+        }
+      }
+    };
+
+    container.addEventListener("wheel", handleWheel, { passive: false });
+    container.addEventListener("touchstart", handleTouchStart, { passive: true });
+    container.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      container.removeEventListener("wheel", handleWheel);
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [activeIndex, totalSteps, isCompactTimeline, isManualNavigation]);
 
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -98,7 +186,7 @@ export function MilestonePage(): ReactNode {
       containerWidth: number,
     ): number => {
       const index = Math.round(scrollLeft / Math.max(containerWidth, 1));
-      return Math.min(Math.max(index, 0), milestones.length);
+      return Math.min(Math.max(index, 0), milestones.length - 1);
     };
 
     const handleCardScroll = (): void => {
@@ -123,7 +211,7 @@ export function MilestonePage(): ReactNode {
         const markerWidth = Math.max(markerScroller.clientWidth, 1);
         const nextIndex = Math.min(
           Math.max(Math.round(markerScroller.scrollLeft / markerWidth), 0),
-          milestones.length,
+          milestones.length - 1,
         );
 
         if (nextIndex !== activeIndexRef.current) {
@@ -202,8 +290,7 @@ export function MilestonePage(): ReactNode {
     [prefersReducedMotion, progressValue, totalSteps],
   );
 
-  const isVisionSlide = activeIndex >= milestones.length;
-  const currentMilestone = !isVisionSlide ? milestones[activeIndex] : null;
+  const currentMilestone = milestones[activeIndex];
 
   return (
     <section
@@ -249,19 +336,6 @@ export function MilestonePage(): ReactNode {
                     </button>
                   ))}
 
-                  <button
-                    ref={markerRefsSetter(milestones.length)}
-                    type="button"
-                    role="tab"
-                    aria-selected={isVisionSlide}
-                    className={`${styles.hMarker} ${isVisionSlide ? styles.hMarkerActive : ""}`}
-                    onClick={(): void => setActiveIndex(milestones.length)}
-                  >
-                    <span className={`${styles.hDot} ${styles.hDotVision}`}>
-                      V
-                    </span>
-                    <span className={styles.hDate}>Vision</span>
-                  </button>
                 </div>
               </div>
 
@@ -273,6 +347,26 @@ export function MilestonePage(): ReactNode {
                     ref={cardRefsSetter(i)}
                     className={`${styles.hCard} ${i === activeIndex ? styles.hCardActive : ""}`}
                   >
+                    {m.image && (
+                      <div className={styles.hCardMediaContainer}>
+                        {m.image.endsWith('.mp4') ? (
+                          <video
+                            src={m.image}
+                            className={styles.hCardMedia}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                          />
+                        ) : (
+                          <img
+                            src={m.image}
+                            alt={m.title}
+                            className={styles.hCardMedia}
+                          />
+                        )}
+                      </div>
+                    )}
                     <div className={styles.detailHeader}>
                       <span
                         className={`${styles.statusBadge} ${styles[m.status]}`}
@@ -291,21 +385,6 @@ export function MilestonePage(): ReactNode {
                   </div>
                 ))}
 
-                <div
-                  data-index={milestones.length}
-                  ref={cardRefsSetter(milestones.length)}
-                  className={`${styles.hCard} ${styles.visionDetail} ${isVisionSlide ? styles.hCardActive : ""}`}
-                >
-                  <div className={styles.visionCards}>
-                    {visionItems.map((item) => (
-                      <div key={item.year} className={styles.visionCard}>
-                        <span className={styles.visionYear}>{item.year}</span>
-                        <h4 className={styles.visionName}>{item.name}</h4>
-                        <p className={styles.visionDesc}>{item.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
           ) : (
@@ -354,26 +433,13 @@ export function MilestonePage(): ReactNode {
                       <span className={styles.markerLabel}>{m.date}</span>
                     </button>
                   ))}
-                  {/* Vision marker */}
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={isVisionSlide}
-                    className={`${styles.markerItem} ${isVisionSlide ? styles.active : ""}`}
-                    onClick={(): void => handleTabClick(milestones.length)}
-                  >
-                    <div className={`${styles.markerDot} ${styles.vision}`}>
-                      <LayersIcon size={14} />
-                    </div>
-                    <span className={styles.markerLabel}>Vision</span>
-                  </button>
                 </div>
               </div>
 
               {/* Center - Details */}
               <div className={styles.details} role="tabpanel">
                 <AnimatePresence mode="wait">
-                  {!isVisionSlide && currentMilestone ? (
+                  {currentMilestone && (
                     <motion.div
                       key={currentMilestone.id}
                       className={styles.detail}
@@ -408,40 +474,6 @@ export function MilestonePage(): ReactNode {
                         {currentMilestone.description}
                       </p>
                     </motion.div>
-                  ) : (
-                    <motion.div
-                      key="vision"
-                      className={styles.visionDetail}
-                      variants={slideChange}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      transition={{
-                        duration: prefersReducedMotion ? 0.01 : 0.4,
-                        ease: EASE_OUT_EXPO,
-                      }}
-                    >
-                      <div className={styles.visionCards}>
-                        {visionItems.map((item, i) => (
-                          <motion.div
-                            key={item.year}
-                            className={styles.visionCard}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{
-                              delay: prefersReducedMotion ? 0 : 0.1 + i * 0.15,
-                              duration: prefersReducedMotion ? 0.01 : 0.4,
-                            }}
-                          >
-                            <span className={styles.visionYear}>
-                              {item.year}
-                            </span>
-                            <h4 className={styles.visionName}>{item.name}</h4>
-                            <p className={styles.visionDesc}>{item.desc}</p>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>
@@ -449,7 +481,7 @@ export function MilestonePage(): ReactNode {
               {/* Right - Milestone Image or Video */}
               <div className={styles.modelContainer}>
                 <AnimatePresence mode="wait">
-                  {!isVisionSlide && currentMilestone?.image ? (
+                  {currentMilestone?.image ? (
                     currentMilestone.image.endsWith('.mp4') ? (
                       <motion.video
                         key={currentMilestone.id}
@@ -478,7 +510,7 @@ export function MilestonePage(): ReactNode {
                     )
                   ) : (
                     <motion.div
-                      key="vision-placeholder"
+                      key="placeholder"
                       className={styles.visionPlaceholder}
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -486,7 +518,7 @@ export function MilestonePage(): ReactNode {
                       transition={{ duration: prefersReducedMotion ? 0 : 0.4 }}
                     >
                       <LayersIcon />
-                      <p>{isVisionSlide ? "Indigenous Propulsion Excellence" : "Developing Next-Generation Tech"}</p>
+                      <p>Developing Next-Generation Tech</p>
                     </motion.div>
                   )}
                 </AnimatePresence>

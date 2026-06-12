@@ -32,7 +32,7 @@ export const NAV_ITEMS = [
   // { label: "Product", href: "/product" },
   { label: "Who we are", href: "/team" },
   { label: "Updates", href: "/pressRelease" },
-  // { label: "Milestone", href: "/milestone" },
+  { label: "Milestone", href: "/milestone" },
   { label: "Career", href: "/career" },
 ] as const;
 

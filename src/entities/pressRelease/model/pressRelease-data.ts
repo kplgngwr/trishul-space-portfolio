@@ -44,7 +44,7 @@ export const pressReleasePosts: PressReleasePost[] = [
       "Spacetech startup Trishul Space raises Rs 4 crore in round led by IAN Angel Fund to advance indigenous rocket engine technology.",
     category: "Press Coverage",
     date: "Nov 13, 2025",
-    image: "/press/et-funding.png",
+    image: "/press",
     externalUrl:
       "https://economictimes.indiatimes.com/tech/funding/spacetech-startup-trishul-space-raises-rs-4-crore-in-round-led-by-ian-angel-fund/articleshow/125302683.cms",
     source: "The Economic Times",
@@ -59,10 +59,25 @@ export const pressReleasePosts: PressReleasePost[] = [
       "Indian Angel Network announces strategic investment in IIT Delhi-incubated rocket propulsion startup building India's next-generation launch vehicles.",
     category: "Press Coverage",
     date: "Nov 10, 2025",
-    image: "/press/ian-funding.png",
+    image: "/pressRelease/IANfund.png",
     externalUrl:
       "https://iangroup.vc/2025/11/10/trishul-space-raises-%E2%82%B94-crore-in-pre-seed-funding-round-led-by-ian-angel-fund/",
     source: "IAN Group",
+    tags: ["Funding", "Investment", "Partnership"],
+    featured: true,
+  },
+  {
+    id: "Defence, space-tech startups move beyond metros for testing, manufacturing",
+    type: "external",
+    title: "Defence, space-tech startups move beyond metros for testing, manufacturing",
+    excerpt:
+      "Space-tech startup Trishul Space, which is based out of IIT Delhi, operates a testing facility in Muradnagar, UP.",
+    category: "Press Coverage",
+    date: "June 2, 2026",
+    image: "/pressRelease/Business-Standard.png",
+    externalUrl:
+      "https://www.business-standard.com/companies/start-ups/defence-space-tech-startups-move-beyond-metros-for-testing-manufacturing-126061001187_1.html",
+    source: "Business Standard",
     tags: ["Funding", "Investment", "Partnership"],
     featured: true,
   },
