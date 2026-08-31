@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Resend } from 'resend';
-import { isValidEmail } from '../src/shared/lib/validation';
+import { isValidEmail } from './validation';
 import { renderEmail } from './emailTemplate';
 
 interface ContactFormData {
