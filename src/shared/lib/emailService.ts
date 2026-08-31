@@ -1,8 +1,8 @@
 /**
- * Email Service Stubs
- * @description Placeholder implementations for form submissions
- * 
- * Replace these with actual API integrations when ready.
+ * Email Service
+ * @description Form submission handlers. Contact form is wired to the
+ * /api/contact serverless function (Resend). Newsletter/job application
+ * remain stub implementations pending their own integrations.
  */
 
 // ============================================================================
@@ -44,22 +44,10 @@ export interface JobApplicationData {
 // Validation Utilities
 // ============================================================================
 
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-const PHONE_REGEX = /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
+export { isValidEmail, isValidPhone } from './validation';
+
 const ALLOWED_FILE_EXTENSIONS = ['.pdf', '.doc', '.docx'];
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-
-export function isValidEmail(email: string): boolean {
-    if (!email || typeof email !== 'string') return false;
-    const trimmed = email.trim();
-    return trimmed.length > 0 && trimmed.length <= 254 && EMAIL_REGEX.test(trimmed);
-}
-
-export function isValidPhone(phone: string): boolean {
-    if (!phone || typeof phone !== 'string') return false;
-    const trimmed = phone.trim().replace(/\s/g, '');
-    return trimmed.length >= 7 && trimmed.length <= 20 && PHONE_REGEX.test(trimmed);
-}
 
 export function validateFile(file: File | null | undefined): string | null {
     if (!file) return 'Please select a file.';
@@ -71,17 +59,24 @@ export function validateFile(file: File | null | undefined): string | null {
 }
 
 // ============================================================================
-// Stub Submission Functions (Console Log Only)
+// Submission Functions
 // ============================================================================
 
 export async function submitContactForm(data: ContactFormData): Promise<SubmitResult> {
-    console.log('[ContactForm] Submission:', data);
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    return {
-        success: true,
-        message: 'Thank you! Your message has been received.',
-    };
+    try {
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
+        const result = (await response.json()) as SubmitResult;
+        return result;
+    } catch {
+        return {
+            success: false,
+            message: 'Something went wrong. Please try again later.',
+        };
+    }
 }
 
 export async function submitNewsletterSubscription(data: NewsletterData): Promise<SubmitResult> {
