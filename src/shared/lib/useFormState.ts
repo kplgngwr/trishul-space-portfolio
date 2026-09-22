@@ -119,29 +119,3 @@ export const INITIAL_CONTACT_FORM_STATE: ContactFormState = {
     subject: '',
     message: '',
 } as const;
-
-/**
- * Application form state interface
- */
-export interface ApplicationFormState {
-    fullName: string;
-    email: string;
-    phone: string;
-    linkedin: string;
-    portfolio: string;
-    experience: string;
-    coverLetter: string;
-}
-
-/**
- * Initial state for application form
- */
-export const INITIAL_APPLICATION_FORM_STATE: ApplicationFormState = {
-    fullName: '',
-    email: '',
-    phone: '',
-    linkedin: '',
-    portfolio: '',
-    experience: '',
-    coverLetter: '',
-} as const;

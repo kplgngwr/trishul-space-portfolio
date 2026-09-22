@@ -1,32 +1,14 @@
-import { useState, useMemo, type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import {
     Button,
     ArrowRightIcon,
-    RocketIcon,
-    BoltIcon,
+    BuildingIcon,
+    LocationIcon,
 } from '@/shared/ui';
 import { useReducedMotion, EASE_OUT_EXPO } from '@/shared/lib';
-import { ApplicationModal } from './ApplicationModal';
+import { useOpenJobs } from './useOpenJobs';
 import styles from './CareerPage.module.css';
-
-// ============================================================================
-// Types
-// ============================================================================
-
-interface JobPosition {
-    id: string;
-    title: string;
-    type: string;
-    location: string;
-    experience: string;
-}
-
-interface Department {
-    name: string;
-    icon: ReactNode;
-    positions: JobPosition[];
-}
 
 // ============================================================================
 // Animation Variants (defined outside component to prevent recreation)
@@ -65,53 +47,6 @@ const ITEM_VARIANTS_REDUCED = {
         transition: { duration: 0.01, ease: EASE_OUT_EXPO },
     },
 } as const;
-
-// ============================================================================
-// Data
-// ============================================================================
-
-const departments: Department[] = [
-    {
-        name: 'Aeronautics Engineering',
-        icon: <RocketIcon size={24} />,
-        positions: [
-            {
-                id: 'aero-propulsion',
-                title: 'Propulsion Systems Engineer',
-                type: 'Full-time',
-                location: 'Delhi, India',
-                experience: '2-5 years',
-            },
-            {
-                id: 'aero-design',
-                title: 'Aerodynamics Design Engineer',
-                type: 'Full-time',
-                location: 'Delhi, India',
-                experience: '3-6 years',
-            },
-        ],
-    },
-    {
-        name: 'Electrical Engineering',
-        icon: <BoltIcon size={24} />,
-        positions: [
-            {
-                id: 'elec-avionics',
-                title: 'Avionics Systems Engineer',
-                type: 'Full-time',
-                location: 'Delhi, India',
-                experience: '2-4 years',
-            },
-            {
-                id: 'elec-embedded',
-                title: 'Embedded Systems Developer',
-                type: 'Full-time',
-                location: 'Delhi, India',
-                experience: '1-3 years',
-            },
-        ],
-    },
-];
 
 // const benefits: Benefit[] = [
 //     {
@@ -156,10 +91,7 @@ const departments: Department[] = [
  */
 export function CareerPage(): ReactNode {
     const prefersReducedMotion = useReducedMotion();
-    const [selectedJob, setSelectedJob] = useState<{
-        title: string;
-        department: string;
-    } | null>(null);
+    const { status, departments } = useOpenJobs();
 
     // Memoized animation variants
     const containerVariants = useMemo(
@@ -171,14 +103,6 @@ export function CareerPage(): ReactNode {
         () => prefersReducedMotion ? ITEM_VARIANTS_REDUCED : ITEM_VARIANTS,
         [prefersReducedMotion]
     );
-
-    const handleApply = (jobTitle: string, department: string): void => {
-        setSelectedJob({ title: jobTitle, department });
-    };
-
-    const handleCloseModal = (): void => {
-        setSelectedJob(null);
-    };
 
     return (
         <div className={styles.careerPage}>
@@ -211,7 +135,25 @@ export function CareerPage(): ReactNode {
             </section>
 
             <section className={styles.departments}>
-                {departments.map((dept, deptIndex) => (
+                {status === 'loading' && (
+                    <p className={styles.statusMessage}>Loading open positions…</p>
+                )}
+
+                {status === 'error' && (
+                    <p className={styles.statusMessage}>
+                        We couldn't load open positions right now. Please try again shortly, or
+                        email your resume to{' '}
+                        <a href="mailto:careers@trishulspace.com">careers@trishulspace.com</a>.
+                    </p>
+                )}
+
+                {status === 'success' && departments.length === 0 && (
+                    <p className={styles.statusMessage}>
+                        There are no open positions at the moment. Check back soon!
+                    </p>
+                )}
+
+                {status === 'success' && departments.map((dept, deptIndex) => (
                     <motion.div
                         key={dept.name}
                         className={styles.department}
@@ -223,7 +165,7 @@ export function CareerPage(): ReactNode {
                         }}
                     >
                         <div className={styles.departmentHeader}>
-                            <span className={styles.departmentIcon}>{dept.icon}</span>
+                            <span className={styles.departmentIcon}><BuildingIcon size={24} /></span>
                             <h2 className={styles.departmentTitle}>{dept.name}</h2>
                         </div>
 
@@ -233,7 +175,7 @@ export function CareerPage(): ReactNode {
                             initial="hidden"
                             animate="visible"
                         >
-                            {dept.positions.map((job) => (
+                            {dept.jobs.map((job) => (
                                 <motion.div
                                     key={job.id}
                                     className={styles.jobCard}
@@ -241,20 +183,24 @@ export function CareerPage(): ReactNode {
                                 >
                                     <div className={styles.jobInfo}>
                                         <h3 className={styles.jobTitle}>{job.title}</h3>
-                                        <div className={styles.jobMeta}>
-                                            <span className={styles.tag}>{job.type}</span>
-                                            <span>{job.location}</span>
-                                            <span>{job.experience}</span>
-                                        </div>
+                                        {job.location && (
+                                            <div className={styles.jobMeta}>
+                                                <span className={styles.tag}>
+                                                    <LocationIcon size={12} />
+                                                    {job.location}
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
-                                    <button
-                                        type="button"
+                                    <a
+                                        href={job.applyUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
                                         className={styles.applyBtn}
-                                        onClick={() => handleApply(job.title, dept.name)}
                                     >
                                         Apply Now
                                         <ArrowRightIcon size={14} />
-                                    </button>
+                                    </a>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -301,13 +247,6 @@ export function CareerPage(): ReactNode {
                     Send Your Resume
                 </Button>
             </section>
-
-            <ApplicationModal
-                isOpen={selectedJob !== null}
-                onClose={handleCloseModal}
-                jobTitle={selectedJob?.title ?? ''}
-                department={selectedJob?.department ?? ''}
-            />
         </div>
     );
 }
