@@ -91,7 +91,7 @@ const ITEM_VARIANTS_REDUCED = {
  */
 export function CareerPage(): ReactNode {
     const prefersReducedMotion = useReducedMotion();
-    const { status, departments } = useOpenJobs();
+    const { status, departments, generalApplyUrl } = useOpenJobs();
 
     // Memoized animation variants
     const containerVariants = useMemo(
@@ -235,12 +235,13 @@ export function CareerPage(): ReactNode {
             <section className={styles.cta}>
                 <h2 className={styles.ctaTitle}>Don't see the right role?</h2>
                 <p className={styles.ctaText}>
-                    We're always looking for talented people. Send us your resume and we'll
-                    keep you in mind for future opportunities.
+                    Share your profile and we'll let you know when a matching position opens.
                 </p>
                 <Button
                     as="a"
-                    href="mailto:careers@trishulspace.com"
+                    href={generalApplyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     variant="primary"
                     icon={<ArrowRightIcon size={16} />}
                 >

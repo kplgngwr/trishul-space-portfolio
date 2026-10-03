@@ -20,6 +20,7 @@ export interface JobDepartmentGroup {
 }
 
 interface CareersResponse {
+    generalApplyUrl?: string;
     jobs: OpenJob[];
 }
 
@@ -28,6 +29,7 @@ type FetchStatus = 'loading' | 'success' | 'error';
 interface UseOpenJobsResult {
     status: FetchStatus;
     departments: JobDepartmentGroup[];
+    generalApplyUrl: string;
 }
 
 // ============================================================================
@@ -44,10 +46,18 @@ const CAREERS_API_URL = import.meta.env.DEV
     ? import.meta.env.VITE_CAREERS_API_URL_DEV || 'http://localhost:3000/api/careers'
     : import.meta.env.VITE_CAREERS_API_URL_PROD || 'https://hiring.trishulspace.com/api/careers';
 const UNSPECIFIED_DEPARTMENT = 'Other Openings';
+const DEFAULT_GENERAL_APPLY_URL = 'https://hiring.trishulspace.com/careers/general';
+// The general talent pool is exposed via generalApplyUrl, not as a job card.
+// Safety net in case it ever leaks into the jobs array.
+const GENERAL_APPLICATION_PREFIX = 'general application';
 
 // ============================================================================
 // Helpers
 // ============================================================================
+
+function isGeneralApplication(job: OpenJob): boolean {
+    return job.title.trim().toLowerCase().startsWith(GENERAL_APPLICATION_PREFIX);
+}
 
 function groupJobsByDepartment(jobs: OpenJob[]): JobDepartmentGroup[] {
     const groups = new Map<string, OpenJob[]>();
@@ -77,6 +87,7 @@ function groupJobsByDepartment(jobs: OpenJob[]): JobDepartmentGroup[] {
 export function useOpenJobs(): UseOpenJobsResult {
     const [status, setStatus] = useState<FetchStatus>('loading');
     const [departments, setDepartments] = useState<JobDepartmentGroup[]>([]);
+    const [generalApplyUrl, setGeneralApplyUrl] = useState(DEFAULT_GENERAL_APPLY_URL);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -89,7 +100,11 @@ export function useOpenJobs(): UseOpenJobsResult {
                 }
 
                 const data: CareersResponse = await response.json();
-                setDepartments(groupJobsByDepartment(data.jobs));
+                // Filtering before grouping means a department (including
+                // "Other Openings") left with no jobs is never created.
+                const standardJobs = data.jobs.filter((job) => !isGeneralApplication(job));
+                setDepartments(groupJobsByDepartment(standardJobs));
+                setGeneralApplyUrl(data.generalApplyUrl || DEFAULT_GENERAL_APPLY_URL);
                 setStatus('success');
             } catch (error) {
                 if (controller.signal.aborted) return;
@@ -102,5 +117,5 @@ export function useOpenJobs(): UseOpenJobsResult {
         return () => controller.abort();
     }, []);
 
-    return { status, departments };
+    return { status, departments, generalApplyUrl };
 }
