@@ -235,7 +235,7 @@ export function CareerPage(): ReactNode {
             <section className={styles.cta}>
                 <h2 className={styles.ctaTitle}>Don't see the right role?</h2>
                 <p className={styles.ctaText}>
-                    Share your profile and we'll let you know when a matching position opens.
+                    Share your profile to our talent Pool and we'll let you know when a matching position opens.
                 </p>
                 <Button
                     as="a"
@@ -245,7 +245,7 @@ export function CareerPage(): ReactNode {
                     variant="primary"
                     icon={<ArrowRightIcon size={16} />}
                 >
-                    Send Your Resume
+                    Talent Pool
                 </Button>
             </section>
         </div>

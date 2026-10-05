@@ -41,8 +41,7 @@ export function VisionMission(): ReactNode {
                             <div className={styles.panelAccent} />
                             <h3 className={styles.panelTitle}>Vision</h3>
                             <p className={styles.panelText}>
-                                To become a global leader in liquid propulsion systems by developing world-class
-                                rocket engines that make space access faster, reliable, and more affordable.
+                                To make humanity a space civilization.
                             </p>
                         </motion.article>
 
@@ -51,8 +50,7 @@ export function VisionMission(): ReactNode {
                             <div className={styles.panelAccent} />
                             <h3 className={styles.panelTitle}>Mission</h3>
                             <p className={styles.panelText}>
-                                To redefine propulsion efficiency by engineering high thrust-to-weight rocket engines
-                                that are lighter, more powerful, and built for the next era of space transportation.
+                                Build reliable, high-performance technologies that deliver superior capabilities in air and space.
                             </p>
                         </motion.article>
                     </div>
