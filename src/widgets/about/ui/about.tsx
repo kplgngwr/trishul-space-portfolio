@@ -179,7 +179,7 @@ export function About(): ReactNode {
                             </motion.div>
 
                             <motion.div variants={variants.fadeInUp}>
-                                <Button as="a" href="/career" variant="primary" icon={<ArrowRightIcon size={18} />}> Join Our Team </Button>
+                                <Button as="a" href="/careers" variant="primary" icon={<ArrowRightIcon size={18} />}> Join Our Team </Button>
                             </motion.div>
                         </div>
                     </div>

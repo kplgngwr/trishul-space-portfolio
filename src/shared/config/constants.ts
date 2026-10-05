@@ -33,7 +33,7 @@ export const NAV_ITEMS = [
   { label: "Who we are", href: "/team" },
   { label: "Updates", href: "/pressRelease" },
   { label: "Milestone", href: "/milestone" },
-  { label: "Career", href: "/career" },
+  { label: "Career", href: "/careers" },
 ] as const;
 
 export type NavItem = (typeof NAV_ITEMS)[number];

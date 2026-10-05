@@ -41,7 +41,7 @@ const NAV_LINKS = [
 const COMPANY_LINKS = [
   { label: "Contact", href: "/contact" },
   { label: "Team", href: "/team" },
-  // { label: "Career", href: "/career" },
+  // { label: "Career", href: "/careers" },
 ] as const;
 
 /**

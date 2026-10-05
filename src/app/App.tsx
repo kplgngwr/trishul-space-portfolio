@@ -1,5 +1,5 @@
 import { type ReactNode, Suspense, lazy } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Layout } from "./Layout";
 
 // ============================================================================
@@ -85,7 +85,10 @@ function App(): ReactNode {
 
         <Route path="/pressRelease/:id" element={ <Suspense fallback={<PageLoader />}> <BlogPostPage /> </Suspense> } />
 
-        <Route path="/career" element={ <Suspense fallback={<PageLoader />}> <CareerPage /> </Suspense> } />
+        <Route path="/careers" element={ <Suspense fallback={<PageLoader />}> <CareerPage /> </Suspense> } />
+
+        {/* Old URL - keep existing links and bookmarks working */}
+        <Route path="/career" element={ <Navigate to="/careers" replace /> } />
 
         <Route path="/team" element={ <Suspense fallback={<PageLoader />}> <TeamPage /> </Suspense> } />
         

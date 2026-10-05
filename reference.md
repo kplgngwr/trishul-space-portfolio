@@ -44,7 +44,7 @@ Each folder maps to a route in `App.tsx`.
 | `Home/`        | `/`                | `HomePage.tsx`       | ✅ Active        |
 | `milestone/`   | `/milestone`       | `MilestonePage.tsx`  | ✅ Active        |
 | `Team/`        | `/team`            | `TeamPage.tsx`       | ✅ Active        |
-| `Career/`      | `/career`          | `CareerPage.tsx`     | ✅ Active        |
+| `Career/`      | `/careers`         | `CareerPage.tsx`     | ✅ Active        |
 | `Contact/`     | `/contact`         | `ContactPage.tsx`    | ✅ Active        |
 | `pressRelease/`| `/pressRelease`    | `pressRelease.tsx`   | ✅ Active        |
 | `Product/`     | `/product`         | `ProductPage.tsx`    | ⏸ Commented out  |
@@ -97,7 +97,7 @@ export const NAV_ITEMS = [
   { label: "Updates", href: "/pressRelease" },
   { label: "Milestone", href: "/milestone" },
   { label: "Team", href: "/team" },
-  { label: "Career", href: "/career" },
+  { label: "Career", href: "/careers" },
 ] as const;
 ```
 
