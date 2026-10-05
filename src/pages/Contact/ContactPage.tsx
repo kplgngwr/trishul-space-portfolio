@@ -324,9 +324,7 @@ export function ContactPage(): ReactNode {
                                     <option value="Partnership Inquiry">Partnership Inquiry</option>
                                     <option value="Investment Opportunity">Investment Opportunity</option>
                                     <option value="Technical Inquiry">Technical Inquiry</option>
-                                    <option value="Career Opportunities">Career Opportunities</option>
                                     <option value="Media & Press">Media & Press</option>
-                                    <option value="Other">Other</option>
                                 </select>
                             </div>
 
