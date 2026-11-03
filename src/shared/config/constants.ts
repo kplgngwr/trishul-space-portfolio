@@ -29,7 +29,6 @@ export const ANIMATION = {
 } as const;
 
 export const NAV_ITEMS = [
-  // { label: "Product", href: "/product" },
   { label: "Who we are", href: "/team" },
   { label: "Updates", href: "/pressRelease" },
   { label: "Milestone", href: "/milestone" },

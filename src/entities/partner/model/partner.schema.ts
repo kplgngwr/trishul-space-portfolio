@@ -4,7 +4,7 @@ import { z } from 'zod';
  * Partner Entity Schema
  */
 
-const partnerCategoryEnum = z.enum(['investor', 'industry', 'incubator']);
+const partnerCategoryEnum = z.enum(['investor', 'supporter', 'partner']);
 
 export type PartnerCategory = z.infer<typeof partnerCategoryEnum>;
 
@@ -18,6 +18,5 @@ export const partnerSchema = z.object({
 });
 
 export const partnersSchema = z.array(partnerSchema);
-
 export type Partner = z.infer<typeof partnerSchema>;
 export type Partners = z.infer<typeof partnersSchema>;

@@ -9,8 +9,6 @@ import { Layout } from "./Layout";
 
 const HomePage = lazy(() => import("@/pages/Home/HomePage").then((m) => ({ default: m.HomePage })), ); 
 
-const ProductPage = lazy(() => import("@/pages/Product/ProductPage").then((m) => ({ default: m.ProductPage, })), );
-
 const BlogsPage = lazy(() => import("@/pages/pressRelease/pressRelease").then((m) => ({ default: m.BlogsPage, })), ); 
 
 const BlogPostPage = lazy(() => import("@/pages/pressRelease/pressReleasePost").then((m) => ({ default: m.BlogPostPage, })), );
@@ -78,8 +76,6 @@ function App(): ReactNode {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={ <Suspense fallback={<PageLoader />}> <HomePage /> </Suspense> } /> 
-
-        <Route path="/product" element={ <Suspense fallback={<PageLoader />}> <ProductPage /> </Suspense> } />
 
         <Route path="/pressRelease" element={ <Suspense fallback={<PageLoader />}> <BlogsPage /> </Suspense> } /> 
 

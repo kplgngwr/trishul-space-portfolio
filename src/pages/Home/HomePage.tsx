@@ -2,7 +2,6 @@ import type { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { ErrorFallback } from '@/shared/ui';
 import { Hero } from '@/widgets/hero';
-// import { Technology } from '@/widgets/technology';
 import { Mission } from '@/widgets/mission';
 import { Product } from '@/widgets/product';
 import { TestFacility } from '@/widgets/test-facility';
@@ -29,9 +28,6 @@ export function HomePage(): ReactNode {
                 <ErrorBoundary FallbackComponent={ErrorFallback}> <Hero /> </ErrorBoundary>
 
                 <ErrorBoundary FallbackComponent={ErrorFallback}> <Mission /> </ErrorBoundary>
-
-                {/* <ErrorBoundary FallbackComponent={ErrorFallback}> <Technology /> </ErrorBoundary>  */}
-
             </PageFlipContainer>
 
             <ErrorBoundary FallbackComponent={ErrorFallback}> <Product /> </ErrorBoundary>

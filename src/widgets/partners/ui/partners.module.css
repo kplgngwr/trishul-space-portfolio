@@ -13,52 +13,110 @@
     margin-bottom: var(--spacing-6);
 }
 
-.title {
-    font-size: var(--text-fluid-2xl);
-    margin-top: var(--spacing-2);
-}
-
 .group {
     margin-top: var(--spacing-4);
     margin-bottom: var(--spacing-6);
 }
 
 .groupLabel {
-    font-size: var(--text-fluid-xs);
-    font-weight: 600;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: clamp(1.75rem, 1.2rem + 1vw, 2rem);
+    margin: 0;
+    max-width: 50ch;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     margin-bottom: var(--spacing-3);
 }
 
-.carousel {
-    overflow: hidden;
-    padding-bottom: var(--spacing-3);
+/* Horizontal row - overflows sideways instead of wrapping */
+.row {
     position: relative;
 }
 
 .track {
     display: flex;
     gap: var(--spacing-4);
-    animation: scroll-left 8s linear infinite;
-}
-
-.track:empty {
-    animation: none;
-}
-
-.staticList {
-    display: flex;
-    flex-wrap: nowrap;
     overflow-x: auto;
-    gap: var(--spacing-3);
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--spacing-1);
+    overscroll-behavior-x: contain;
+    /* room for the card hover lift + shadow so they aren't clipped */
+    padding: var(--spacing-2) var(--spacing-1) var(--spacing-4);
+    scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+    display: none;
+}
+
+.row.fadeStart .track,
+.row.fadeEnd .track {
+    --fade-start: 0px;
+    --fade-end: 0px;
+    mask-image: linear-gradient(90deg, transparent, #000 var(--fade-start), #000 calc(100% - var(--fade-end)), transparent);
+}
+
+.row.fadeStart .track {
+    --fade-start: 48px;
+}
+
+.row.fadeEnd .track {
+    --fade-end: 48px;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.72);
+    color: white;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.92);
+    transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+
+.row:hover .arrow,
+.row:focus-within .arrow {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) scale(1);
+}
+
+.arrow:hover {
+    background: var(--color-brand-primary);
+    border-color: rgba(255, 255, 255, 0.38);
+}
+
+.arrow:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+    outline: 2px solid var(--color-brand-accent);
+    outline-offset: 3px;
+}
+
+.arrowPrev {
+    left: var(--spacing-2);
+}
+
+.arrowNext {
+    right: var(--spacing-2);
 }
 
 .card {
+    display: flex;
     flex: 0 0 220px;
-    max-width: 220px;
+    scroll-snap-align: start;
+    min-height: 132px;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     padding: var(--spacing-4);
     background: var(--color-surface-elevated);
@@ -67,12 +125,13 @@
     text-align: center;
     text-decoration: none;
     cursor: pointer;
-    transition: border-color 0.3s ease, transform 0.3s ease;
     box-sizing: border-box;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
     border-color: var(--color-brand-primary);
+    box-shadow: 0 10px 24px rgb(15 23 42 / 8%);
     transform: translateY(-4px);
 }
 
@@ -94,15 +153,8 @@
     height: 56px;
     display: flex;
     align-items: center;
-
-@media (max-width: 1024px) {
-    .staticList {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-}
     justify-content: center;
     margin-bottom: var(--spacing-3);
-    transition: filter 0.3s ease;
 }
 
 .logo img {
@@ -118,67 +170,25 @@
     color: var(--color-text-primary);
 }
 
-@keyframes scroll-left {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@media (max-width: 1024px) {
-    .track {
-        gap: var(--spacing-3);
-        animation-duration: 24s;
-    }
-
-    .card {
-        flex: 0 0 min(320px, 100%);
-        max-width: 320px;
+/* Touch devices swipe the row; hover arrows aren't needed */
+@media (hover: none) {
+    .arrow {
+        display: none;
     }
 }
 
 @media (max-width: 640px) {
-    /* Mobile: show one card at a time with snap scrolling */
-    .carousel,
-    .staticList,
-    .track {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x mandatory;
-    }
-
     .groupLabel {
         margin-bottom: var(--spacing-2);
     }
 
     .track {
-        animation: none;
         gap: var(--spacing-3);
-    }
-
-    .staticList {
-        display: flex;
-        gap: var(--spacing-3);
-        flex-wrap: nowrap;
-        align-items: center;
     }
 
     .card {
-        flex: 0 0 100%;
-        max-width: 100%;
+        flex-basis: 160px;
+        min-height: 124px;
         padding: var(--spacing-3);
-        scroll-snap-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    /* hide scrollbars for a cleaner look */
-    .carousel::-webkit-scrollbar,
-    .staticList::-webkit-scrollbar,
-    .track::-webkit-scrollbar {
-        display: none;
     }
 }

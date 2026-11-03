@@ -15,9 +15,7 @@ This project is a React-based web application for **Trishul Space**, built with 
 | Build Tool   | Vite 7.2.4                       |
 | Styling      | CSS Modules (Vanilla CSS) + Tailwind CSS 4.1.18 |
 | Animations   | Framer Motion 12.23.26           |
-| 3D Graphics  | Three.js 0.182.0, React Three Fiber 9.5.0, React Three Drei 10.7.7 |
 | Animation Library | Anime.js 4.2.2                |
-| State & Data | React Query (@tanstack/react-query 5.90.16) |
 | Form & Validation | Zod 4.3.4                   |
 | Routing      | React Router DOM 7.11.0          |
 | Error Handling | React Error Boundary 6.0.1      |
@@ -47,7 +45,6 @@ Each folder maps to a route in `App.tsx`.
 | `Career/`      | `/careers`         | `CareerPage.tsx`     | ✅ Active        |
 | `Contact/`     | `/contact`         | `ContactPage.tsx`    | ✅ Active        |
 | `pressRelease/`| `/pressRelease`    | `pressRelease.tsx`   | ✅ Active        |
-| `Product/`     | `/product`         | `ProductPage.tsx`    | ⏸ Commented out  |
 | `NotFound/`    | `*`                | `NotFoundPage.tsx`   | ✅ Active        |
 
 ### `widgets/` — Composable UI Sections
@@ -61,7 +58,6 @@ Each widget lives in `widgets/<name>/ui/<name>.tsx` with a barrel `index.ts`.
 | **`mission/`**   | **HomePage**   | **"Propulsion is the Bottleneck" — problem statement, stats (54%/60%/90%), engine visual, necessity bar** |
 | **`product/`**   | **HomePage**   | **Harpy-1 engine showcase — 60/40 layout, variant switching (Vacuum/Ground), aerospace-grade specification rows, CTA hierarchy** |
 | `about/`         | HomePage       | Company intro with gallery slider & stats              |
-| `technology/`    | _(commented)_  | Technology showcase (to be included later)              |
 | `test-facility/` | HomePage       | Test facility video section                            |
 | `partners/`      | HomePage       | Partner logo strip                                     |
 | `page-flip/`     | HomePage       | Stacked-card scroll animation wrapper                  |
@@ -93,7 +89,6 @@ Each entity has `model/` with `*.schema.ts` (types) and `*.data.ts` (static data
 
 ```ts
 export const NAV_ITEMS = [
-  // { label: "Product", href: "/product" },  ← commented out
   { label: "Updates", href: "/pressRelease" },
   { label: "Milestone", href: "/milestone" },
   { label: "Team", href: "/team" },
@@ -239,8 +234,6 @@ npm run preview    # Preview production build locally
 | Folder          | Contents                                  |
 |-----------------|-------------------------------------------|
 | `favicon/`      | Icon variants (16x16, 32x32, 192x192, 512x512) |
-| `hdr/`          | HDR environment maps for 3D scenes        |
-| `models/`       | 3D model files                            |
 | `products/`     | Product images                            |
 | `partners/`     | Partner logos                             |
 | `team/`         | Team member photos                        |
@@ -420,7 +413,8 @@ All SVG icons use 24x24 viewBox with stroke-width 2.5, linear gradients, and ani
    - Zod schema validates product structure at import time
    - Type-safe with TypeScript inferred types
    - ProductSpec: `{ label, value }`
-   - Product: `{ id, name, specs[], image, isUnderDevelopment }`
+   - ProductVariant: `{ key, label, image, specs[] }` (specs = differentiating features)
+   - Product: `{ id, name, subtitle, description, variants[], specs[] (common), image?, isUnderDevelopment? }`
 
 6. **Animation Variants Used**
    - `fadeInUp` — Section header
@@ -432,46 +426,42 @@ All SVG icons use 24x24 viewBox with stroke-width 2.5, linear gradients, and ani
 ### Product Data Schema (`entities/product/model/product.schema.ts`)
 
 ```ts
-const productSpecSchema = z.object({
+const productVariantSchema = z.object({
+  key: z.string().min(1),
   label: z.string().min(1),
-  value: z.string().min(1),
+  image: assetPathSchema('Variant image'),
+  specs: z.array(productSpecSchema).min(1), // differentiating features; first = headline metric
 });
 
 const productSchema = z.object({
-  id: z.string().min(1),
-  name: z.string().min(1),
-  specs: z.array(productSpecSchema).min(1),
-  image: z.string().refine((val) => val.startsWith('/') || val.startsWith('http')),
+  id, name, subtitle, description,
+  variants: z.array(productVariantSchema).default([]),
+  specs: z.array(productSpecSchema).min(1),   // common to all variants
+  image: assetPathSchema('Image').optional(), // only required when there are no variants
   isUnderDevelopment: z.boolean().optional(),
-});
-
-type Product = z.infer<typeof productSchema>;
-type Products = z.infer<typeof productsSchema>;
+}).refine((p) => p.image || p.variants.length > 0);
 ```
 
 ### Product Data Store (`entities/product/model/product.data.ts`)
 
 ```ts
-const rawProducts = [
-  {
-    id: 'harpy',
-    name: 'Harpy-1',
-    description: 'A cryogenic liquid engine...',
-    specs: [
-      { label: 'Thrust (Vacuum)', value: '37 kN' },
-      { label: 'Propellant', value: 'LOX / LNG' },
-      { label: 'Cycle', value: 'Fuel-rich staged combustion' },
-      { label: 'Specific Impulse', value: '345 s' },
-      { label: 'Burn Duration', value: '700 s' },
-    ],
-    image: '/products/harpy-1.webp',
-    isUnderDevelopment: true,
-  },
-  // Future products can be added here without component changes
-];
-
-export const products: Products = productsSchema.parse(rawProducts);
+{
+  id: 'harpy',
+  name: 'Harpy-1',
+  variants: [
+    { key: 'ground', label: 'Ground Level', image: '/products/harpy-1-Ground.png', specs: [{ label: 'Nominal Thrust', value: '30 kN' }] },
+    { key: 'vacuum', label: 'Vacuum Level', image: '/products/harpy-1-Vacuum.png', specs: [{ label: 'Nominal Thrust', value: '37 kN' }] },
+  ],
+  specs: [
+    { label: 'Propellant', value: 'LOX / LNG' },
+    { label: 'Cycle Type', value: 'Fuel-Rich Staged Combustion' },
+  ],
+  // image: N.A. — variants provide their own images
+}
 ```
+
+The home-page widget shows the selected variant's image, promotes its first spec to the headline metric,
+and lists the remaining variant specs followed by the common specs. There is no dedicated `/product` page.
 
 ### Performance Optimization
 
@@ -520,7 +510,6 @@ const variants = {
 ### Data Management
 - Static data in `entities/<name>/model/*.data.ts`
 - Type definitions in `entities/<name>/model/*.schema.ts`
-- React Query for async server state (when needed)
 - Zod for runtime validation
 
 ### Performance Optimization
@@ -528,4 +517,3 @@ const variants = {
 - Code splitting per route
 - CSS Modules prevent style conflicts
 - Image lazy loading (`loading="lazy"`)
-- HDR environment maps for optimized 3D scenes

@@ -29,3 +29,6 @@ dist-ssr
 *.sw?
 *.pdf
 *.txt
+
+# Visual Studio cache
+.vs/

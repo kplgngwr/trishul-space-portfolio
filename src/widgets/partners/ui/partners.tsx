@@ -9,11 +9,13 @@ import {
     scaleFade,
     getVariants,
 } from '@/shared/lib';
+import { PartnerRow } from './PartnerRow';
 import styles from './partners.module.css';
 
-// Collapse all partner categories into a single 'Industry' carousel
 const categoryMap = [
-    { key: 'industry', label: 'Industry', autoScroll: true },
+    { key: 'supporter', label: 'Supported By' },
+    { key: 'investor', label: 'Investors' },
+    { key: 'partner', label: 'Partners' },
 ] as const;
 
 /**
@@ -30,10 +32,9 @@ export function Partners(): ReactNode {
         scaleFade: getVariants(scaleFade, prefersReducedMotion),
     };
 
-    // Put all partners under the single Industry group (preserve auto-scroll)
     const groupedPartners = categoryMap.map((category) => ({
         ...category,
-        partners: partners,
+        partners: partners.filter((partner) => partner.categories.includes(category.key)),
     }));
 
     return (
@@ -44,47 +45,25 @@ export function Partners(): ReactNode {
                     animate={hasIntersected ? 'visible' : 'hidden'}
                     variants={variants.staggerContainer}
                 >
-                    {/* Section Header */}
                     <motion.header className={styles.header} variants={variants.fadeInUp}>
-                        <span className="section-eyebrow">Trusted By</span>
-                        <h2 className={styles.title}>Investors, Partners & Incubators</h2>
+                        <span className="section-eyebrow">Supported By</span>
                     </motion.header>
 
                     {groupedPartners.map((group) => (
                         <motion.div className={styles.group} key={group.key} variants={variants.fadeInUp}>
 
-                            {/* <motion.h3 className={styles.groupLabel} variants={variants.fadeInUp}> {group.label} </motion.h3> */}
-
-                            {group.autoScroll && !prefersReducedMotion ? (
-                                <motion.div className={styles.carousel} variants={variants.staggerContainer}>
-                                    <motion.div className={styles.track} variants={variants.staggerContainer}>
-
-                                        {[...group.partners, ...group.partners].map((partner, index) => (
-                                            <motion.a
-                                                key={`${group.key}-${partner.name}-${index}`}
-                                                href={partner.url}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className={`${styles.card} ${partner.isDark ? styles.darkCard : ''}`}
-                                                variants={variants.scaleFade}
-                                            >
-                                                <div className={styles.logo}> <img src={partner.logo} alt={partner.name} /> </div>
-                                                <span className={styles.name}>{partner.name}</span>
-                                            </motion.a>
-                                        ))}
-                                    </motion.div>
-                                </motion.div>
-                                
-                            ) : (
-                                <motion.div className={styles.staticList} variants={variants.staggerContainer}>
-                                    {group.partners.map((partner) => (
-                                        <motion.a key={`${group.key}-${partner.name}`} href={partner.url} target="_blank" rel="noopener noreferrer" className={`${styles.card} ${partner.isDark ? styles.darkCard : ''}`} variants={variants.scaleFade} >
-                                            <div className={styles.logo}> <img src={partner.logo} alt={partner.name} /> </div>
-                                            <span className={styles.name}>{partner.name}</span>
-                                        </motion.a>
-                                    ))}
-                                </motion.div>
+                            {group.key !== 'supporter' && (
+                                <motion.h2 className={styles.groupLabel} variants={variants.fadeInUp}>
+                                    {group.label}
+                                </motion.h2>
                             )}
+
+                            <PartnerRow
+                                label={group.label}
+                                partners={group.partners}
+                                listVariants={variants.staggerContainer}
+                                cardVariants={variants.scaleFade}
+                            />
                         </motion.div>
                     ))}
                 </motion.div>

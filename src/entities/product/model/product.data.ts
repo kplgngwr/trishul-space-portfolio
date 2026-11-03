@@ -3,6 +3,10 @@ import { productsSchema, type Products } from './product.schema';
 /**
  * Product Data
  * @description Statically validated product data
+ *
+ * - `variants[].specs` → features that differ per variant (first one is the headline metric)
+ * - `specs`            → details common to all variants
+ * - `image`            → only for products without variants
  */
 
 const rawProducts = [
@@ -16,24 +20,23 @@ const rawProducts = [
             {
                 key: 'ground',
                 label: 'Ground Level',
-                thrust: '30 kN',
                 image: '/products/harpy-1-Ground.png',
+                specs: [{ label: 'Nominal Thrust', value: '30 kN' }],
             },
             {
                 key: 'vacuum',
                 label: 'Vacuum Level',
-                thrust: '37 kN',
                 image: '/products/harpy-1-Vacuum.png',
+                specs: [{ label: 'Nominal Thrust', value: '37 kN' }],
             },
         ],
         specs: [
-            { label: 'Nominal Thrust (Vacuum)', value: '37 kN' },
             { label: 'Propellant', value: 'LOX / LNG' },
             { label: 'Cycle Type', value: 'Fuel-Rich Staged Combustion' },
             // { label: 'Specific Impulse', value: '345 s' },
             // { label: 'Burn Duration', value: '700 s' },
         ],
-        image: '/updates/harpy-1.png',
+        // image: N.A. — each variant provides its own image
         isUnderDevelopment: true,
     },
 ] as const;

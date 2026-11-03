@@ -14,23 +14,31 @@ import {
 import { products } from '@/entities/product';
 import styles from './product.module.css';
 
+const hasMultipleProducts = products.length > 1;
+
 export function Product(): ReactNode {
     const navigate = useNavigate();
     const { ref, hasIntersected } = useIntersection<HTMLElement>({ threshold: 0.15 });
     const prefersReducedMotion = useReducedMotion();
 
-    const [productIndex] = useState(0);
-    const product = products[productIndex];
-    const [activeVariant, setActiveVariant] = useState(product.variants[0]?.key ?? '');
-    const currentVariant = product.variants.find((variant) => variant.key === activeVariant) ?? product.variants[0];
+    const [productIndex, setProductIndex] = useState(0);
+    const [activeVariantKey, setActiveVariantKey] = useState(products[0]?.variants[0]?.key);
 
-    const nextProduct = () => {
-        // TODO: implement actual product cycling
-        console.log('next product');
-    };
-    const prevProduct = () => {
-        // TODO: implement actual product cycling
-        console.log('previous product');
+    const product = products[productIndex];
+    if (!product) return null;
+
+    const currentVariant =
+        product.variants.find((variant) => variant.key === activeVariantKey) ?? product.variants[0];
+
+    // Variant-specific features come first; the first spec is promoted to the headline metric
+    const [heroSpec, ...tableSpecs] = [...(currentVariant?.specs ?? []), ...product.specs];
+    const image = currentVariant?.image ?? product.image;
+    const imageAlt = currentVariant ? `${product.name} ${currentVariant.label}` : product.name;
+
+    const showProduct = (step: number): void => {
+        const nextIndex = (productIndex + step + products.length) % products.length;
+        setProductIndex(nextIndex);
+        setActiveVariantKey(products[nextIndex]?.variants[0]?.key);
     };
 
     const variants = {
@@ -60,33 +68,38 @@ export function Product(): ReactNode {
                     <div className={styles.mainGrid}>
                         {/* LEFT – Visual panel */}
                         <motion.div className={styles.visualSide} variants={variants.fadeInLeft}>
-                            {/* Navigation arrows */}
-                            <button className={styles.arrowButton} aria-label="Previous product" onClick={prevProduct}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </button>
-                            <button className={styles.arrowButton} aria-label="Next product" onClick={nextProduct}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </button>
+                            {hasMultipleProducts && (
+                                <>
+                                    <button className={styles.arrowButton} aria-label="Previous product" onClick={() => showProduct(-1)}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                    <button className={styles.arrowButton} aria-label="Next product" onClick={() => showProduct(1)}>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                </>
+                            )}
 
                             <AnimatePresence mode="wait">
-                                <motion.img
-                                    key={`${currentVariant?.key ?? activeVariant}-image`}
-                                    src={currentVariant?.image ?? product.image}
-                                    alt={`Harpy-1 ${currentVariant?.label ?? product.name} Engine`}
-                                    className={styles.productImage}
-                                    loading="lazy"
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    transition={{
-                                        duration: prefersReducedMotion ? 0.01 : 0.3,
-                                        ease: [0.16, 1, 0.3, 1],
-                                    }}
-                                />
+                                {image && (
+                                    <motion.img
+                                        key={image}
+                                        src={image}
+                                        alt={imageAlt}
+                                        className={styles.productImage}
+                                        loading="lazy"
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.95 }}
+                                        transition={{
+                                            duration: prefersReducedMotion ? 0.01 : 0.3,
+                                            ease: [0.16, 1, 0.3, 1],
+                                        }}
+                                    />
+                                )}
                             </AnimatePresence>
                         </motion.div>
 
@@ -95,25 +108,32 @@ export function Product(): ReactNode {
                             {/* Top row: variant selector + hero metric */}
                             <div className={styles.topMetaRow}>
                                 <motion.div className={styles.variantBlock} variants={variants.fadeInUp}>
-                                    <div className={styles.variantTabs} role="tablist" aria-label="Engine configuration">
-                                        {product.variants.map((variant) => (
-                                            <button
-                                                key={variant.key}
-                                                className={`${styles.variantTab} ${activeVariant === variant.key ? styles.active : ''}`}
-                                                onClick={() => setActiveVariant(variant.key)}
-                                                aria-pressed={activeVariant === variant.key}
-                                                role="tab"
-                                            >
-                                                {variant.label}
-                                            </button>
-                                        ))}
-                                    </div>
+                                    {product.variants.length > 0 && (
+                                        <div className={styles.variantTabs} role="tablist" aria-label="Engine configuration">
+                                            {product.variants.map((variant) => {
+                                                const isActive = variant.key === currentVariant?.key;
+                                                return (
+                                                    <button
+                                                        key={variant.key}
+                                                        className={`${styles.variantTab} ${isActive ? styles.active : ''}`}
+                                                        onClick={() => setActiveVariantKey(variant.key)}
+                                                        aria-selected={isActive}
+                                                        role="tab"
+                                                    >
+                                                        {variant.label}
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
                                 </motion.div>
 
-                                <motion.div className={styles.heroMetric} variants={variants.fadeInUp}>
-                                    <div className={styles.heroValue}>{currentVariant?.thrust ?? product.variants[0]?.thrust}</div>
-                                    <div className={styles.heroLabel}>Nominal Thrust</div>
-                                </motion.div>
+                                {heroSpec && (
+                                    <motion.div className={styles.heroMetric} variants={variants.fadeInUp}>
+                                        <div className={styles.heroValue}>{heroSpec.value}</div>
+                                        <div className={styles.heroLabel}>{heroSpec.label}</div>
+                                    </motion.div>
+                                )}
                             </div>
 
                             {/* Specs table */}
@@ -123,7 +143,7 @@ export function Product(): ReactNode {
                                 initial="hidden"
                                 animate={hasIntersected ? 'visible' : 'hidden'}
                             >
-                                {product.specs.map((spec, index) => (
+                                {tableSpecs.map((spec, index) => (
                                     <motion.div
                                         key={spec.label}
                                         className={styles.specRow}
@@ -140,9 +160,7 @@ export function Product(): ReactNode {
                                         }}
                                     >
                                         <div className={styles.specLabel}>{spec.label}</div>
-                                        <div className={styles.specValue}>
-                                            {spec.label.toLowerCase().includes('thrust') ? currentVariant?.thrust ?? spec.value : spec.value}
-                                        </div>
+                                        <div className={styles.specValue}>{spec.value}</div>
                                     </motion.div>
                                 ))}
                             </motion.div>
@@ -150,10 +168,10 @@ export function Product(): ReactNode {
                             {/* CTA area */}
                             <motion.div className={styles.ctaSection} variants={variants.fadeInUp}>
                                 <div className={styles.ctaRow}>
-                                    <button className={`${styles.ctaButton} ${styles.primary}`} onClick={() => navigate('/contact')}>Request Specifications</button>
-                                    {/* <button className={`${styles.ctaButton} ${styles.secondary}`}>Download Datasheet</button> */}
+                                    <button className={`${styles.ctaButton} ${styles.primary}`} onClick={() => navigate('/contact')}>
+                                        Request Specifications
+                                    </button>
                                 </div>
-                                {/* <button className={styles.textCta}>Request Specifications</button> */}
                             </motion.div>
                         </motion.div>
                     </div>
